@@ -1,7 +1,7 @@
 
 
 body {
-    margin-top: 77px;
+    margin-top: 80px;
 }
 
 header nav {
@@ -10,4 +10,30 @@ header nav {
 
 nav img {
     height: 50px;
+}
+
+.card-user {
+    display: block;
+    padding: 0 5px;
+    background-color: rgb(59, 59, 184);
+    font-size: 12px;
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px; 
+}
+
+.card-body {
+    overflow: auto;
+}
+
+.row {
+    height: 550px;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.card {
+    max-height: 100%;
 }
