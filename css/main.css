@@ -1,7 +1,7 @@
 
-
 body {
     margin-top: 80px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 header nav {
@@ -15,10 +15,11 @@ nav img {
 .card-user {
     display: block;
     padding: 0 5px;
-    background-color: rgb(44, 100, 184);
+    background-color: rgb(51, 122, 183);
     font-size: 12px;
+    font-weight: 800;
     color: white;
-    border-radius: 5px;
+    border-radius: 3px;
     margin-left: 10px; 
 }
 
@@ -26,14 +27,44 @@ nav img {
     overflow: auto;
 }
 
-.row {
-    height: 550px;
-}
-
-.container {
-    max-width: 100%;
-}
-
 .card {
     max-height: 100%;
+    min-width: 250px;
+    max-width: 250px;
+}
+
+.text-box {
+    position: relative;
+}
+
+.btn-info {
+    background-color: #96cde9;
+}
+
+.btn-edit {
+    font-size: 12px;
+    color: white;
+    padding: 2px 5px;
+    border: solid 0.1px #2C94B6;
+    border-radius: 3px;
+    background-color: #55B6E2;
+    position: absolute;
+    font-weight: 600;
+    top: 3px;
+    right: 3px;
+    display: none;
+}
+
+.btn-edit:hover {
+    background-color: #2AA8D3;
+}
+
+.text-box:hover .btn-edit {
+    display: block;
+}
+
+.container-costum {
+    height: calc(100vh - 115px);
+    min-height: 250px;
+    width: 1500px
 }
