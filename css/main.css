@@ -68,3 +68,14 @@ nav img {
     min-height: 250px;
     width: 1500px
 }
+
+/* members */
+
+.members-list {
+    width: 960px;
+    margin: 30px;
+}
+
+.members-list input {
+    width: 300px;
+}
