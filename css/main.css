@@ -1,18 +1,30 @@
 
 body {
-    margin-top: 80px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 header nav {
     border-bottom: 0.5px solid lightgray;
+    display: flex;
+    height: 60px;
+    align-items: center;
+    padding: 0 20px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    height: 100%;
+    padding-left: 10px;
+    margin-bottom: 0;
 }
 
 nav img {
-    height: 50px;
+    display: block;
+    height: 45px;
 }
 
-.card-user {
+.card-member {
     display: block;
     padding: 0 5px;
     background-color: rgb(51, 122, 183);
@@ -29,11 +41,11 @@ nav img {
 
 .card {
     max-height: 100%;
-    min-width: 250px;
-    max-width: 250px;
+    width: 250px;
+    flex-shrink: 1;
 }
 
-.text-box {
+.taskboard-card {
     position: relative;
 }
 
@@ -59,14 +71,38 @@ nav img {
     background-color: #2AA8D3;
 }
 
-.text-box:hover .btn-edit {
+.taskboard-card:hover .btn-edit {
     display: block;
 }
 
-.container-costum {
+.btn-add {
+    width: 250px;
+    flex-shrink: 1;
+}
+
+.btn-dlt {
+    z-index: 20;
+    right: 0;
+    display: none;
+}
+
+.btn-nav {
+    background-color: inherit;
+    border: none;
+    height: 100%;
+    padding: 0 15px;
+}
+
+.btn-nav:hover {
+    background-color: lightgray;
+    transition: 0.5s;
+}
+
+.taskboard-board {
     height: calc(100vh - 115px);
     min-height: 250px;
-    width: 1500px
+    width: fit-content;
+    display: flex;
 }
 
 /* members */
@@ -74,6 +110,7 @@ nav img {
 .members-list {
     width: 960px;
     margin: 30px;
+    display: none;
 }
 
 .members-list input {

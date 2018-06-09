@@ -8,141 +8,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-    <script src="js/main.js"></script>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white">
-            <a class="navbar-brand" href="#">
+        <nav>
+            <a href="#">
                 <img src="assets/taskboard-logo.svg" alt="logo" title="logo">
             </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Board
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Members</a>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li>
+                    <button class="btn-nav" onclick="showSection('board')">Board</button>
+                </li>
+                <li>
+                    <button class="btn-nav" onclick="showSection('members')">Members</button>
+                </li>
+            </ul>
         </nav>
     </header>
 
-    <div class="d-flex flex-row flex-nowrap align-items-start justify-content-start ml-0 mr-5 container-costum">
+    <div class="flex-row flex-nowrap align-items-start justify-content-start ml-0 mr-5 taskboard-board">
 
-        <section class="card m-2 p-0">
-
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <h5>Header</h5>
-                <button class="btn btn-light bg-white border">&#9662</button>
-            </div>
-
-            <div class="card-body p-3">
-                <div class="border border-info rounded p-3 mb-3 text-box">
-                    <button class="btn-edit">Edit card</button>
-                    <p class="mb-5">some writing</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                        <span class="card-user" title="Alona Sanbira">AS</span>
-                    </div>
-                </div>
-                <div class="border border-info rounded p-3 mb-3">
-                    <p class="mb-5">another box of writing</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                        <span class="card-user" title="Alona Sanbira">AS</span>
-                    </div>
-                </div>
-                <div class="border border-info rounded p-3 mb-3">
-                    <p class="mb-5">another box of writing that i wanted to put to see what heppens when theres a lot of cards</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <p class="mb-0">Add a card...</p>
-            </div>
-
-        </section>
-
-        <section class="card m-2 p-0">
-
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <h5>Header</h5>
-                <button class="btn btn-light bg-white border">&#9662</button>
-            </div>
-
-            <div class="card-body p-3">
-                <div class="border border-info rounded p-3 mb-3">
-                    <p class="mb-5">some writing</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                        <span class="card-user" title="Alona Sanbira">AS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <p class="mb-0">Add a card...</p>
-            </div>
-
-        </section>
-
-        <section class="card m-2 p-0">
-
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <h5>Header</h5>
-                <button class="btn btn-light bg-white border">&#9662</button>
-            </div>
-
-            <div class="card-body p-3">
-                <div class="border border-info rounded p-3 mb-3">
-                    <p class="mb-5">some writing</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                        <span class="card-user" title="Alona Sanbira">AS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <p class="mb-0">Add a card...</p>
-            </div>
-
-        </section>
-
-        <section class="card m-2 p-0">
-
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <h5>Header</h5>
-                <button class="btn btn-light bg-white border">&#9662</button>
-            </div>
-
-            <div class="card-body p-3">
-                <div class="border border-info rounded p-3 mb-3">
-                    <p class="mb-5">some writing</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="card-user" title="Matan Sanbira">MS</span>
-                        <span class="card-user" title="Alona Sanbira">AS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <p class="mb-0">Add a card...</p>
-            </div>
-
-        </section>
-
-        <button class="btn btn-info m-2 col-lg-2 text-left">Add a list...</button>
+        <button class="btn btn-info m-2 col-lg-2 text-left btn-add">Add a list...</button>
 
     </div>
+
+    <section class="members-list">
+        <h1 class="font-weight-bold">Taskbord members</h1>
+        <ul class="list-group">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item d-flex align-content-center">
+                <input class="form-control form-control-lg mr-2" type="text" placeholder="Add new member">
+                <button class="btn btn-primary">Add</button>
+            </li>
+        </ul>
+    </section>
+
+    <script src="js/main.js"></script>
+
 </body>
 
 </html>
