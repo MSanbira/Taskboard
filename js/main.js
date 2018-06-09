@@ -159,21 +159,46 @@ function findMemberById(searchId) {
 
 createBoard(lists);
 
+function createMembersList(members) {
+    let membersHTML = '';
+    for (const member of members) {
+        membersHTML += createMember(member.fullName);
+    }
+    document.querySelector(".members-list").innerHTML = membersHTML + document.querySelector(".members-list").innerHTML;
+}
+
+function createMember(fullName) {
+    let memberHTML = `<li class="list-group-item member">
+        <span>${fullName.trim()}</span>
+        <div class="btn-hover">
+            <button class="btn btn-info" onclick="editMember()">Edit</button>
+            <button class="btn btn-danger" onclick="deleteMember()">Delete</button>
+        </div>
+    </li>`;
+    return memberHTML;
+}
+
+createMembersList(members);
+
 function showDeleteList() {
-// ask dima
+    // ask dima
+}
+
+function deleteList() {
+    //ask dima
 }
 
 function showSection(section) {
     let btnNav = document.getElementsByClassName("btn-nav");
     if (section == 'board') {
         document.querySelector('.taskboard-board').style.display = "flex";
-        document.querySelector('.members-list').style.display = "none";
+        document.querySelector('.members-container').style.display = "none";
         btnNav[0].style = "background-color: lightgray;";
         btnNav[1].style = "background-color: inherit;";
     }
     else {
         document.querySelector('.taskboard-board').style.display = "none";
-        document.querySelector('.members-list').style.display = "block";
+        document.querySelector('.members-container').style.display = "block";
         btnNav[1].style = "background-color: lightgray;";
         btnNav[0].style = "background-color: inherit;";
     }
