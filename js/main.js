@@ -86,7 +86,10 @@ function createList(list) {
 
         <div class="d-flex card-header justify-content-between align-items-center">
             <h5>${list.title}</h5>
-            <button class="btn btn-light bg-white border">&#9662</button>
+            <div class="position-relative">
+                <button class="btn btn-light bg-white border" onclick="showDeleteList">&#9662</button>
+                <button class="btn btn-light position-absolute bg-white border btn-dlt" onclick="deleteList">Delete list</button>
+            </div>
         </div>
 
         <div class="card-body p-3">
@@ -131,13 +134,12 @@ function createCardInitials(cardMembers) {
     let initialsHTML = '';
     for (const id of cardMembers) {
         let cardMember = findMemberById(id);
-        initialsHTML += `<span class="card-member">${createInitials(cardMember)}</span>`;
+        initialsHTML += `<span class="card-member" title="${cardMember}">${createInitials(cardMember)}</span>`;
     }
     return initialsHTML;
 }
 
 function createInitials(fullName) {
-    fullName = fullName.trim();
     let initials = "";
     let nameArr = fullName.split(" ");
     for (const name of nameArr) {
@@ -156,3 +158,23 @@ function findMemberById(searchId) {
 }
 
 createBoard(lists);
+
+function showDeleteList() {
+// ask dima
+}
+
+function showSection(section) {
+    let btnNav = document.getElementsByClassName("btn-nav");
+    if (section == 'board') {
+        document.querySelector('.taskboard-board').style.display = "flex";
+        document.querySelector('.members-list').style.display = "none";
+        btnNav[0].style = "background-color: lightgray;";
+        btnNav[1].style = "background-color: inherit;";
+    }
+    else {
+        document.querySelector('.taskboard-board').style.display = "none";
+        document.querySelector('.members-list').style.display = "block";
+        btnNav[1].style = "background-color: lightgray;";
+        btnNav[0].style = "background-color: inherit;";
+    }
+}
