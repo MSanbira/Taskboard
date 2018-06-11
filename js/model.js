@@ -90,5 +90,15 @@ const model = {
             }
         }
         createBoard(model.lists);
+    },
+
+    deleteMember: function (id) {
+        for (let i=0; i<model.members.length; i++) {
+            if (id == model.members[i].id) {
+                model.members.splice(i,1);
+                break;
+            }
+        }
+        createMembersList(model.members);
     }
 };

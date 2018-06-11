@@ -1,4 +1,6 @@
 
+// UI board
+
 function createBoard(listsArr) {
     let listsHTML = '';
     for (const list of listsArr) {
@@ -20,7 +22,7 @@ function createList(list) {
             <h5>${list.title}</h5>
             <div class="position-relative btn-scroll">
                 <button class="btn btn-light bg-white border">&#9662</button>
-                <button class="btn btn-light position-absolute bg-white border btn-dlt" data-list-id="${list.id}">Delete list</button>
+                <button class="btn btn-light position-absolute bg-white border btn-dlt-list" data-list-id="${list.id}">Delete list</button>
             </div>
         </div>
 
@@ -91,20 +93,27 @@ function findMemberById(searchId) {
 
 createBoard(model.lists);
 
+// UI members
+
 function createMembersList(members) {
     let membersHTML = '';
     for (const member of members) {
-        membersHTML += createMember(member.fullName);
+        membersHTML += createMember(member);
     }
-    document.querySelector(".members-list").innerHTML = membersHTML + document.querySelector(".members-list").innerHTML;
+    document.querySelector(".members-list").innerHTML = membersHTML +
+    `<li class="list-group-item d-flex align-content-center">
+        <input class="form-control form-control-lg mr-2" type="text" placeholder="Add new member">
+        <button class="btn btn-primary">Add</button>
+    </li>`;
+    deleteMemberEventListener();
 }
 
-function createMember(fullName) {
+function createMember(member) {
     let memberHTML = `<li class="list-group-item member">
-        <span>${fullName.trim()}</span>
+        <span>${member.fullName.trim()}</span>
         <div class="btn-hover">
-            <button class="btn btn-info" onclick="editMember()">Edit</button>
-            <button class="btn btn-danger" onclick="deleteMember()">Delete</button>
+            <button class="btn btn-info btn-edit-member" data-member-id="${member.id}">Edit</button>
+            <button class="btn btn-danger btn-dlt-member" data-member-id="${member.id}">Delete</button>
         </div>
     </li>`;
     return memberHTML;
@@ -112,25 +121,36 @@ function createMember(fullName) {
 
 createMembersList(model.members);
 
+// board functions
+
 function deleteListEventListener() {
     let btnScroll = document.querySelectorAll('.btn-scroll');
-    let btnDlt = document.querySelectorAll('.btn-dlt');
+    let btnDltList = document.querySelectorAll('.btn-dlt-list');
     for (let i = 0; i < btnScroll.length; i++) {
         btnScroll[i].addEventListener('click', (event) => {
-            event.target.parentElement.querySelector('.btn-dlt').style.display = 'block';
+            event.target.parentElement.querySelector('.btn-dlt-list').style.display = 'block';
         });
         btnScroll[i].addEventListener('mouseleave', (event) => {
-            event.target.parentElement.querySelector('.btn-dlt').style.display = 'none';
+            event.target.parentElement.querySelector('.btn-dlt-list').style.display = 'none';
         });
-        btnDlt[i].addEventListener('click', (event) => {
+        btnDltList[i].addEventListener('click', (event) => {
             model.deleteList(event.target.getAttribute('data-list-id'));
         });
     }
 }
 
-function deleteList() {
-    //ask dima
+// members functions
+
+function deleteMemberEventListener() {
+    let btnDltMember = document.querySelectorAll('.btn-dlt-member');
+    for (let i = 0; i<btnDltMember.length; i++) {
+        btnDltMember[i].addEventListener('click', (event) => {
+            model.deleteMember(event.target.getAttribute('data-member-id'));
+        })
+    }
 }
+
+// tabs
 
 function showSection(section) {
     let btnNav = document.getElementsByClassName("btn-nav");

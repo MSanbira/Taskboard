@@ -80,7 +80,7 @@ nav img {
     flex-shrink: 1;
 }
 
-.btn-dlt {
+.btn-dlt-list {
     z-index: 20;
     right: 0;
     display: none;
