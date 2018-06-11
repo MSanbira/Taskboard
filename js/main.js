@@ -1,74 +1,4 @@
 
-const lists = [
-    {
-        title: 'Todo',
-        cards: [
-            {
-                text: 'wash the dishes',
-                members: [
-                    'kumumk', 'vfvfefv'
-                ]
-            },
-            {
-                text: 'Do De LANDRY',
-                members: [
-                    'kumumk'
-                ]
-            },
-            {
-                text: 'here is anouther card to put on the list to finally see if the css is worcking ok, and there are no members. just a few more words to see what happends',
-                members: []
-            }
-        ]
-    },
-    {
-        title: 'done',
-        cards: [
-            {
-                text: 'btn game',
-                members: [
-                    'kumumk'
-                ]
-            },
-            {
-                text: 'macking a nice breackfest for my wife',
-                members: [
-                    'kumumk'
-                ]
-            }
-        ]
-    },
-    {
-        title: 'in prog',
-        cards: [
-            {
-                text: 'Transatlantic is the best band!',
-                members: []
-            }
-        ]
-    },
-    {
-        title: 'one more',
-        cards: [
-            {
-                text: 'ok cool',
-                members: []
-            }
-        ]
-    }
-];
-
-const members = [
-    {
-        id: 'kumumk',
-        fullName: 'Matan Nahoom Sanbira'
-    },
-    {
-        id: 'vfvfefv',
-        fullName: 'Dima V'
-    }
-];
-
 function createBoard(listsArr) {
     let listsHTML = '';
     for (const list of listsArr) {
@@ -88,7 +18,7 @@ function createList(list) {
             <h5>${list.title}</h5>
             <div class="position-relative">
                 <button class="btn btn-light bg-white border" onclick="showDeleteList">&#9662</button>
-                <button class="btn btn-light position-absolute bg-white border btn-dlt" onclick="deleteList">Delete list</button>
+                <button class="btn btn-light position-absolute bg-white border btn-dlt" data-list-id="${list.id}">Delete list</button>
             </div>
         </div>
 
@@ -149,7 +79,7 @@ function createInitials(fullName) {
 }
 
 function findMemberById(searchId) {
-    for (const member of members) {
+    for (const member of model.members) {
         if (searchId == member.id) {
             return member.fullName;
             break;
@@ -157,7 +87,7 @@ function findMemberById(searchId) {
     }
 }
 
-createBoard(lists);
+createBoard(model.lists);
 
 function createMembersList(members) {
     let membersHTML = '';
@@ -178,7 +108,7 @@ function createMember(fullName) {
     return memberHTML;
 }
 
-createMembersList(members);
+createMembersList(model.members);
 
 function showDeleteList() {
     // ask dima
@@ -194,12 +124,12 @@ function showSection(section) {
         document.querySelector('.taskboard-board').style.display = "flex";
         document.querySelector('.members-container').style.display = "none";
         btnNav[0].style = "background-color: lightgray;";
-        btnNav[1].style = "background-color: inherit;";
+        btnNav[1].style = "";
     }
     else {
         document.querySelector('.taskboard-board').style.display = "none";
         document.querySelector('.members-container').style.display = "block";
         btnNav[1].style = "background-color: lightgray;";
-        btnNav[0].style = "background-color: inherit;";
+        btnNav[0].style = "";
     }
 }
