@@ -4,19 +4,19 @@ const model = {
     // lists
     lists: [
         {
-            id: 'jfjfjfj',
+            id: '_8er9bgfka',
             title: 'Todo',
             cards: [
                 {
                     text: 'wash the dishes',
                     members: [
-                        'kumumk', 'vfvfefv'
+                        '_sioy9cpwk', '_6jo650ic4'
                     ]
                 },
                 {
                     text: 'Do De LANDRY',
                     members: [
-                        'kumumk'
+                        '_sioy9cpwk'
                     ]
                 },
                 {
@@ -26,25 +26,25 @@ const model = {
             ]
         },
         {
-            id: 'jjkfjfj',
+            id: '_k3de9v44n',
             title: 'done',
             cards: [
                 {
                     text: 'btn game',
                     members: [
-                        'kumumk'
+                        '_sioy9cpwk'
                     ]
                 },
                 {
                     text: 'macking a nice breackfest for my wife',
                     members: [
-                        'kumumk'
+                        '_sioy9cpwk'
                     ]
                 }
             ]
         },
         {
-            id: 'jfjkgfj',
+            id: '_37crd17o8',
             title: 'in prog',
             cards: [
                 {
@@ -54,7 +54,7 @@ const model = {
             ]
         },
         {
-            id: 'jqwfjfj',
+            id: '_qfpkrwmq1',
             title: 'one more',
             cards: [
                 {
@@ -68,11 +68,11 @@ const model = {
     //members  
     members: [
         {
-            id: 'kumumk',
+            id: '_sioy9cpwk',
             fullName: 'Matan Nahoom Sanbira'
         },
         {
-            id: 'vfvfefv',
+            id: '_6jo650ic4',
             fullName: 'Dima V'
         }
     ],

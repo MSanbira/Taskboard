@@ -5,6 +5,7 @@ function createBoard(listsArr) {
         listsHTML += createList(list);
     }
     document.querySelector(".taskboard-board").innerHTML = listsHTML + document.querySelector(".taskboard-board").innerHTML;
+    deleteListEventListener();
 }
 
 function createList(list) {
@@ -16,8 +17,8 @@ function createList(list) {
 
         <div class="d-flex card-header justify-content-between align-items-center">
             <h5>${list.title}</h5>
-            <div class="position-relative">
-                <button class="btn btn-light bg-white border" onclick="showDeleteList">&#9662</button>
+            <div class="position-relative btn-scroll">
+                <button class="btn btn-light bg-white border">&#9662</button>
                 <button class="btn btn-light position-absolute bg-white border btn-dlt" data-list-id="${list.id}">Delete list</button>
             </div>
         </div>
@@ -110,8 +111,18 @@ function createMember(fullName) {
 
 createMembersList(model.members);
 
-function showDeleteList() {
-    // ask dima
+function deleteListEventListener() {
+    console.log('yes');
+    let btnScroll = document.querySelectorAll('.btn-scroll');
+    let btnDlt = document.querySelectorAll('.btn-dlt');
+    for (let i=0; i < btnScroll.length; i++) {
+        btnScroll[i].addEventListener('click', (event) => {
+            event.target.parentElement.querySelector('.btn-dlt').style.display = 'block';
+        });
+        btnScroll[i].addEventListener('mouseleave', (event) => {
+            event.target.parentElement.querySelector('.btn-dlt').style.display = 'none';
+        });
+    }
 }
 
 function deleteList() {
