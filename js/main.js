@@ -4,7 +4,8 @@ function createBoard(listsArr) {
     for (const list of listsArr) {
         listsHTML += createList(list);
     }
-    document.querySelector(".taskboard-board").innerHTML = listsHTML + document.querySelector(".taskboard-board").innerHTML;
+    document.querySelector(".taskboard-board").innerHTML = listsHTML +
+        '<button class="btn btn-info m-2 col-lg-2 text-left btn-add">Add a list...</button>';
     deleteListEventListener();
 }
 
@@ -112,15 +113,17 @@ function createMember(fullName) {
 createMembersList(model.members);
 
 function deleteListEventListener() {
-    console.log('yes');
     let btnScroll = document.querySelectorAll('.btn-scroll');
     let btnDlt = document.querySelectorAll('.btn-dlt');
-    for (let i=0; i < btnScroll.length; i++) {
+    for (let i = 0; i < btnScroll.length; i++) {
         btnScroll[i].addEventListener('click', (event) => {
             event.target.parentElement.querySelector('.btn-dlt').style.display = 'block';
         });
         btnScroll[i].addEventListener('mouseleave', (event) => {
             event.target.parentElement.querySelector('.btn-dlt').style.display = 'none';
+        });
+        btnDlt[i].addEventListener('click', (event) => {
+            model.deleteList(event.target.getAttribute('data-list-id'));
         });
     }
 }

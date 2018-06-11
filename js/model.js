@@ -80,5 +80,15 @@ const model = {
     //functions
     idGenerator: function () {
         return '_' + Math.random().toString(36).substr(2, 9);
+    },
+
+    deleteList: function (id) {
+        for (let i=0; i<model.lists.length; i++) {
+            if (id == model.lists[i].id) {
+                model.lists.splice(i,1);
+                break;
+            }
+        }
+        createBoard(model.lists);
     }
 };
