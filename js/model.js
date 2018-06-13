@@ -92,6 +92,15 @@ const model = {
         createBoard(model.lists);
     },
 
+    addMember: function (fullNameInput) {
+        let newMember = {
+            id: model.idGenerator(),
+            fullName: fullNameInput
+        }
+        model.members.push(newMember);
+        createMembersList(model.members);
+    },
+
     deleteMember: function (id) {
         for (let i=0; i<model.members.length; i++) {
             if (id == model.members[i].id) {

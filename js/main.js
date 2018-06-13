@@ -101,11 +101,12 @@ function createMembersList(members) {
         membersHTML += createMember(member);
     }
     document.querySelector(".members-list").innerHTML = membersHTML +
-    `<li class="list-group-item d-flex align-content-center">
-        <input class="form-control form-control-lg mr-2" type="text" placeholder="Add new member">
-        <button class="btn btn-primary">Add</button>
+        `<li class="list-group-item d-flex align-content-center">
+        <input class="form-control form-control-lg mr-2 input-member" type="text" placeholder="Add new member">
+        <button class="btn btn-primary btn-add-member">Add</button>
     </li>`;
     deleteMemberEventListener();
+    addMemberEventListener();
 }
 
 function createMember(member) {
@@ -134,18 +135,35 @@ function deleteListEventListener() {
             event.target.parentElement.querySelector('.btn-dlt-list').style.display = 'none';
         });
         btnDltList[i].addEventListener('click', (event) => {
-            model.deleteList(event.target.getAttribute('data-list-id'));
+            if (confirm('Are you sure?')) {
+                model.deleteList(event.target.getAttribute('data-list-id'));
+            }
         });
     }
 }
 
 // members functions
 
+function addMemberEventListener() {
+    document.querySelector('.btn-add-member').addEventListener('click', () => {
+        let inputValue = document.querySelector('.input-member').value;
+        if (inputValue != "") {
+            model.addMember(inputValue);
+            inputValue = "";
+        }
+        else {
+            alert('You must write the name first, try again.')
+        }
+    });
+}
+
 function deleteMemberEventListener() {
     let btnDltMember = document.querySelectorAll('.btn-dlt-member');
-    for (let i = 0; i<btnDltMember.length; i++) {
+    for (let i = 0; i < btnDltMember.length; i++) {
         btnDltMember[i].addEventListener('click', (event) => {
-            model.deleteMember(event.target.getAttribute('data-member-id'));
+            if (confirm('Are you sure?')) {
+                model.deleteMember(event.target.getAttribute('data-member-id'));
+            }
         })
     }
 }
