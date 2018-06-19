@@ -109,12 +109,12 @@ nav img {
 
 .members-container {
     min-width: 400px;
-    width: 960px;
+    width: 700px;
     margin: 30px auto;
     display: none;
 }
 
-.members-list input {
+.members-list .input-member {
     width: 300px;
 }
 
@@ -122,11 +122,15 @@ nav img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 50px;
 }
 
 .member .btn {
     padding: 3px 10px;
+}
+
+.member .edit-member {
+    width: 500px;
 }
 
 .btn-hover {
@@ -135,4 +139,8 @@ nav img {
 
 .member:hover .btn-hover {
     display: block;
+}
+
+.confirm-edit {
+    display: none;
 }
