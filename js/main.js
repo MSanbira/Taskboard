@@ -1,80 +1,14 @@
 
-const lists = [
-    {
-        title: 'Todo',
-        cards: [
-            {
-                text: 'wash the dishes',
-                members: [
-                    'kumumk', 'vfvfefv'
-                ]
-            },
-            {
-                text: 'Do De LANDRY',
-                members: [
-                    'kumumk'
-                ]
-            },
-            {
-                text: 'here is anouther card to put on the list to finally see if the css is worcking ok, and there are no members. just a few more words to see what happends',
-                members: []
-            }
-        ]
-    },
-    {
-        title: 'done',
-        cards: [
-            {
-                text: 'btn game',
-                members: [
-                    'kumumk'
-                ]
-            },
-            {
-                text: 'macking a nice breackfest for my wife',
-                members: [
-                    'kumumk'
-                ]
-            }
-        ]
-    },
-    {
-        title: 'in prog',
-        cards: [
-            {
-                text: 'Transatlantic is the best band!',
-                members: []
-            }
-        ]
-    },
-    {
-        title: 'one more',
-        cards: [
-            {
-                text: 'ok cool',
-                members: []
-            }
-        ]
-    }
-];
-
-const members = [
-    {
-        id: 'kumumk',
-        fullName: 'Matan Nahoom Sanbira'
-    },
-    {
-        id: 'vfvfefv',
-        fullName: 'Dima V'
-    }
-];
+// UI board
 
 function createBoard(listsArr) {
     let listsHTML = '';
     for (const list of listsArr) {
         listsHTML += createList(list);
     }
-    document.querySelector(".taskboard-board").innerHTML = listsHTML + document.querySelector(".taskboard-board").innerHTML;
+    document.querySelector(".taskboard-board").innerHTML = listsHTML +
+        '<button class="btn btn-info m-2 col-lg-2 text-left btn-add">Add a list...</button>';
+    // deleteListEventListener();
 }
 
 function createList(list) {
@@ -86,9 +20,9 @@ function createList(list) {
 
         <div class="d-flex card-header justify-content-between align-items-center">
             <h5>${list.title}</h5>
-            <div class="position-relative">
-                <button class="btn btn-light bg-white border" onclick="showDeleteList">&#9662</button>
-                <button class="btn btn-light position-absolute bg-white border btn-dlt" onclick="deleteList">Delete list</button>
+            <div class="position-relative btn-scroll">
+                <button class="btn btn-light bg-white border list-options-toggle-btn">&#9662</button>
+                <button class="btn btn-light position-absolute bg-white border btn-dlt-list" data-list-id="${list.id}">Delete list</button>
             </div>
         </div>
 
@@ -149,7 +83,7 @@ function createInitials(fullName) {
 }
 
 function findMemberById(searchId) {
-    for (const member of members) {
+    for (const member of model.members) {
         if (searchId == member.id) {
             return member.fullName;
             break;
@@ -157,24 +91,139 @@ function findMemberById(searchId) {
     }
 }
 
-createBoard(lists);
+createBoard(model.lists);
 
-function showDeleteList() {
-// ask dima
+// UI members
+
+function createMembersList(members) {
+    let membersHTML = '';
+    for (const member of members) {
+        membersHTML += createMember(member);
+    }
+    document.querySelector(".members-list").innerHTML = membersHTML +
+        `<li class="list-group-item d-flex align-content-center">
+        <input class="form-control form-control-lg mr-2 input-member" type="text" placeholder="Add new member">
+        <button class="btn btn-primary btn-add-member">Add</button>
+    </li>`;
+    deleteMemberEventListener();
+    addMemberEventListener();
+    editMemberEventListener();
 }
+
+function createMember(member) {
+    let memberHTML = `<li class="list-group-item">
+        <div class="member">
+            <span>${member.fullName.trim()}</span>
+            <div class="btn-hover">
+                <button class="btn btn-info btn-edit-member" data-member-id="${member.id}">Edit</button>
+                <button class="btn btn-danger btn-dlt-member" data-member-id="${member.id}">Delete</button>
+            </div>
+        </div>
+        <div class="member confirm-edit">
+            <input class="form-control form-control-lg mr-2 edit-member" type="text">
+            <div class="btn-confirm-edit">
+                <button class="btn btn-light btn-cancel-member" data-member-id="${member.id}">Cancel</button>
+                <button class="btn btn-success btn-save-member" data-member-id="${member.id}">Save</button>
+            </div>
+        </div>
+    </li>`;
+    return memberHTML;
+}
+
+createMembersList(model.members);
+
+// board functions
+
+//name register click event on all delete list button
+// function deleteListEventListener() {
+//     let btnScroll = document.querySelectorAll('.btn-scroll');
+//     let btnDltList = document.querySelectorAll('.btn-dlt-list');
+//     for (let i = 0; i < btnScroll.length; i++) {
+//         btnScroll[i].addEventListener('click', (event) => {
+//             let deleteBtnElement = event.target.parentElement.querySelector('.btn-dlt-list');
+//             deleteBtnElement.style.display = 'block';
+//             deleteBtnElement.addEventListener('click', (event) => {
+//                 if (confirm('Are you sure?')) {
+//                     model.deleteList(event.target.getAttribute('data-list-id'));
+//                 }
+//             });
+//         });
+//         btnScroll[i].addEventListener('mouseleave', (event) => {
+//             event.target.parentElement.querySelector('.btn-dlt-list').style.display = 'none';
+//         });
+//     }
+// }
+
+// members functions
+
+function addMemberEventListener() {
+    document.querySelector('.btn-add-member').addEventListener('click', () => {
+        let inputValue = document.querySelector('.input-member').value;
+        if (inputValue != "") {
+            model.addMember(inputValue);
+            inputValue = "";
+        }
+        else {
+            alert('You must write the name first, try again.')
+        }
+    });
+}
+
+function deleteMemberEventListener() {
+    let btnDltMember = document.querySelectorAll('.btn-dlt-member');
+    for (let i = 0; i < btnDltMember.length; i++) {
+        btnDltMember[i].addEventListener('click', (event) => {
+            if (confirm('Are you sure?')) {
+                model.deleteMember(event.target.getAttribute('data-member-id'));
+            }
+        });
+    }
+}
+
+function editMemberEventListener() {
+    let btnEditMember = document.querySelectorAll('.btn-edit-member');
+    let saveEdit = document.querySelectorAll('.btn-save-member');
+    let cancelEdit = document.querySelectorAll('.btn-cancel-member');
+    for (let i = 0; i < btnEditMember.length; i++) {
+        btnEditMember[i].addEventListener('click', (event) => {
+            event.target.parentElement.parentElement.style.display = 'none';
+            event.target.parentElement.parentElement.parentElement.querySelector('.confirm-edit').style.display = 'flex';
+        });
+    }
+    // todo : continiu
+}
+
+
+
+function init() {
+    registerEvents();
+}
+
+function registerEvents() {
+    document.querySelector('.taskboard-board').addEventListener('click', (event) => {
+        
+        if (event.target.classList.contains('list-options-toggle-btn')) {
+            console.log('list-options-toggle-btn clicked');
+        }
+    });
+}
+
+// tabs
 
 function showSection(section) {
     let btnNav = document.getElementsByClassName("btn-nav");
     if (section == 'board') {
         document.querySelector('.taskboard-board').style.display = "flex";
-        document.querySelector('.members-list').style.display = "none";
+        document.querySelector('.members-container').style.display = "none";
         btnNav[0].style = "background-color: lightgray;";
-        btnNav[1].style = "background-color: inherit;";
+        btnNav[1].style = "";
     }
     else {
         document.querySelector('.taskboard-board').style.display = "none";
-        document.querySelector('.members-list').style.display = "block";
+        document.querySelector('.members-container').style.display = "block";
         btnNav[1].style = "background-color: lightgray;";
-        btnNav[0].style = "background-color: inherit;";
+        btnNav[0].style = "";
     }
 }
+
+init();
