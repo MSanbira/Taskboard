@@ -144,3 +144,7 @@ nav img {
 .confirm-edit {
     display: none;
 }
+
+.show {
+    display: block;
+}

@@ -8,7 +8,6 @@ function createBoard(listsArr) {
     }
     document.querySelector(".taskboard-board").innerHTML = listsHTML +
         '<button class="btn btn-info m-2 col-lg-2 text-left btn-add">Add a list...</button>';
-    // deleteListEventListener();
 }
 
 function createList(list) {
@@ -91,8 +90,6 @@ function findMemberById(searchId) {
     }
 }
 
-createBoard(model.lists);
-
 // UI members
 
 function createMembersList(members) {
@@ -130,29 +127,25 @@ function createMember(member) {
     return memberHTML;
 }
 
-createMembersList(model.members);
-
 // board functions
 
-//name register click event on all delete list button
-// function deleteListEventListener() {
-//     let btnScroll = document.querySelectorAll('.btn-scroll');
-//     let btnDltList = document.querySelectorAll('.btn-dlt-list');
-//     for (let i = 0; i < btnScroll.length; i++) {
-//         btnScroll[i].addEventListener('click', (event) => {
-//             let deleteBtnElement = event.target.parentElement.querySelector('.btn-dlt-list');
-//             deleteBtnElement.style.display = 'block';
-//             deleteBtnElement.addEventListener('click', (event) => {
-//                 if (confirm('Are you sure?')) {
-//                     model.deleteList(event.target.getAttribute('data-list-id'));
-//                 }
-//             });
-//         });
-//         btnScroll[i].addEventListener('mouseleave', (event) => {
-//             event.target.parentElement.querySelector('.btn-dlt-list').style.display = 'none';
-//         });
-//     }
-// }
+function toggleDeleteList(eventTarget) {
+    eventTarget.parentElement.querySelector('.btn-dlt-list').classList.toggle('show');
+}
+
+function hideDeleteListBtn() {
+    let btnDeleteList = document.querySelectorAll('.btn-dlt-list');
+    for (const btn of btnDeleteList) {
+        btn.classList.remove('show');
+    }
+}
+
+function deleteList(eventTarget) {
+    if (confirm('Are you sure?')) {
+        model.deleteList(eventTarget.getAttribute('data-list-id'));
+        createBoard(model.lists);
+    }
+}
 
 // members functions
 
@@ -193,17 +186,25 @@ function editMemberEventListener() {
     // todo : continiu
 }
 
-
+// init + event listeners
 
 function init() {
+    createMembersList(model.members);
+    createBoard(model.lists);
     registerEvents();
 }
 
 function registerEvents() {
-    document.querySelector('.taskboard-board').addEventListener('click', (event) => {
-        
+    document.addEventListener('click', (event) => {
+
+        hideDeleteListBtn();
+
         if (event.target.classList.contains('list-options-toggle-btn')) {
-            console.log('list-options-toggle-btn clicked');
+            toggleDeleteList(event.target);
+        }
+
+        if (event.target.classList.contains('btn-dlt-list')) {
+            deleteList(event.target);
         }
     });
 }
