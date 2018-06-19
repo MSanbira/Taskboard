@@ -24,6 +24,10 @@ nav img {
     height: 45px;
 }
 
+.list-title, .input-list-title {
+    display: none;
+}
+
 .card-member {
     display: block;
     padding: 0 5px;
@@ -146,5 +150,5 @@ nav img {
 }
 
 .show {
-    display: block;
+    display: block!important;
 }

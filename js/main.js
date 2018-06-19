@@ -18,7 +18,10 @@ function createList(list) {
     const listHTML = `<section class="card m-2 p-0 taskboard-list">
 
         <div class="d-flex card-header justify-content-between align-items-center">
-            <h5>${list.title}</h5>
+            <div>
+                <h5 class="list-title show">${list.title}</h5>
+                <input class="form-control form-control input-list-title" type="text" placeholder="List Name" data-list-id="${list.id}">
+            </div>
             <div class="position-relative btn-scroll">
                 <button class="btn btn-light bg-white border list-options-toggle-btn">&#9662</button>
                 <button class="btn btn-light position-absolute bg-white border btn-dlt-list" data-list-id="${list.id}">Delete list</button>
@@ -126,14 +129,50 @@ function createMember(member) {
 
 // board functions
 
-function toggleDeleteList(eventTarget) {
-    eventTarget.parentElement.querySelector('.btn-dlt-list').classList.toggle('show');
+function editListTitle(eventTarget) {
+    let title = eventTarget;
+    let input = eventTarget.parentElement.querySelector('.input-list-title');
+    title.classList.remove('show');
+    input.classList.add('show');
+    input.value = title.innerText;
+    input.addEventListener('blur', (event) => {
+        title.classList.add('show');
+        input.classList.remove('show');
+        if (input.value != title.innerText) {
+            model.editListTitle(input.value, input.getAttribute('data-list-id'))
+            createBoard(model.lists);
+        }
+    });
 }
 
-function hideDeleteListBtn() {
-    let btnDeleteList = document.querySelectorAll('.btn-dlt-list');
-    for (const btn of btnDeleteList) {
-        btn.classList.remove('show');
+function hideEditListTitle(eventTarget) {
+    if (!eventTarget.classList.contains('input-list-title')) {
+        let title = document.querySelectorAll('.list-title');
+        let input = document.querySelectorAll('.input-list-title');
+        for (let i = 0; i < model.lists.length; i++) {
+            if (!title[i].classList.contains('show')) {
+                title[i].classList.add('show');
+                input[i].classList.remove('show');
+            }
+        }
+    }
+}
+
+function toggleDeleteList(eventTarget) {
+    eventTarget.parentElement.querySelector('.btn-dlt-list').classList.toggle('show');
+    eventTarget.classList.toggle('show');
+}
+
+function hideDeleteListBtn(eventTarget) {
+    if (!eventTarget.classList.contains('list-options-toggle-btn') || !eventTarget.classList.contains('show')) {
+        let btnDeleteList = document.querySelectorAll('.btn-dlt-list');
+        let btnDeleteListToggle = document.querySelectorAll('.list-options-toggle-btn');
+        for (const btn of btnDeleteList) {
+            btn.classList.remove('show');
+        }
+        for (const btn of btnDeleteListToggle) {
+            btn.classList.remove('show');
+        }
     }
 }
 
@@ -166,18 +205,18 @@ function deleteMember(eventTarget) {
     }
 }
 
-function editMemberEventListener() {
-    let btnEditMember = document.querySelectorAll('.btn-edit-member');
-    let saveEdit = document.querySelectorAll('.btn-save-member');
-    let cancelEdit = document.querySelectorAll('.btn-cancel-member');
-    for (let i = 0; i < btnEditMember.length; i++) {
-        btnEditMember[i].addEventListener('click', (event) => {
-            event.target.parentElement.parentElement.style.display = 'none';
-            event.target.parentElement.parentElement.parentElement.querySelector('.confirm-edit').style.display = 'flex';
-        });
-    }
-    // todo : continiu
-}
+// function editMemberEventListener() {
+//     let btnEditMember = document.querySelectorAll('.btn-edit-member');
+//     let saveEdit = document.querySelectorAll('.btn-save-member');
+//     let cancelEdit = document.querySelectorAll('.btn-cancel-member');
+//     for (let i = 0; i < btnEditMember.length; i++) {
+//         btnEditMember[i].addEventListener('click', (event) => {
+//             event.target.parentElement.parentElement.style.display = 'none';
+//             event.target.parentElement.parentElement.parentElement.querySelector('.confirm-edit').style.display = 'flex';
+//         });
+//     }
+//     // todo : continiu
+// }
 
 // init + event listeners
 
@@ -192,7 +231,13 @@ function registerEvents() {
 
         // board
 
-        hideDeleteListBtn();
+        hideDeleteListBtn(event.target);
+
+        hideEditListTitle(event.target);
+
+        if (event.target.classList.contains('list-title')) {
+            editListTitle(event.target);
+        }
 
         if (event.target.classList.contains('list-options-toggle-btn')) {
             toggleDeleteList(event.target);

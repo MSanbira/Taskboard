@@ -81,7 +81,7 @@ const model = {
     addList: function (title) {
         let newList = {
             id: model.idGenerator(),
-            title: title,
+            title: title.trim(),
             cards: []
         }
         model.lists.push(newList);
@@ -104,7 +104,7 @@ const model = {
     editListTitle: function (ListTitle, listId) {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === listId) {
-                model.lists[i].title = ListTitle;
+                model.lists[i].title = ListTitle.trim();
                 break;
             }
         }
