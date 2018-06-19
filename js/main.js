@@ -102,9 +102,6 @@ function createMembersList(members) {
         <input class="form-control form-control-lg mr-2 input-member" type="text" placeholder="Add new member">
         <button class="btn btn-primary btn-add-member">Add</button>
     </li>`;
-    deleteMemberEventListener();
-    addMemberEventListener();
-    editMemberEventListener();
 }
 
 function createMember(member) {
@@ -162,14 +159,11 @@ function addMemberEventListener() {
     });
 }
 
-function deleteMemberEventListener() {
-    let btnDltMember = document.querySelectorAll('.btn-dlt-member');
-    for (let i = 0; i < btnDltMember.length; i++) {
-        btnDltMember[i].addEventListener('click', (event) => {
-            if (confirm('Are you sure?')) {
-                model.deleteMember(event.target.getAttribute('data-member-id'));
-            }
-        });
+function deleteMember(eventTarget) {
+    if (confirm('Are you sure?')) {
+        model.deleteMember(eventTarget.getAttribute('data-member-id'));
+        createMembersList(model.members);
+        createBoard(model.lists);
     }
 }
 
@@ -197,6 +191,8 @@ function init() {
 function registerEvents() {
     document.addEventListener('click', (event) => {
 
+        // board
+
         hideDeleteListBtn();
 
         if (event.target.classList.contains('list-options-toggle-btn')) {
@@ -205,6 +201,12 @@ function registerEvents() {
 
         if (event.target.classList.contains('btn-dlt-list')) {
             deleteList(event.target);
+        }
+
+        // members
+
+        if (event.target.classList.contains('btn-dlt-member')) {
+            deleteMember(event.target);
         }
     });
 }

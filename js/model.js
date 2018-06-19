@@ -186,5 +186,15 @@ const model = {
                 break;
             }
         }
+        for (let i = 0; i < model.lists.length; i++) {
+            for (let j = 0; j < model.lists[i].cards.length; j++) {
+                for (let k = 0; k < model.lists[i].cards[j].members.length; k++) {
+                    if (model.lists[i].cards[j].members[k] === id) {
+                        model.lists[i].cards[j].members.splice(k, 1);
+                        break;
+                    }
+                }
+            }
+        }
     }
 };
