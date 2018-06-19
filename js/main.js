@@ -146,17 +146,16 @@ function deleteList(eventTarget) {
 
 // members functions
 
-function addMemberEventListener() {
-    document.querySelector('.btn-add-member').addEventListener('click', () => {
-        let inputValue = document.querySelector('.input-member').value;
-        if (inputValue != "") {
-            model.addMember(inputValue);
-            inputValue = "";
-        }
-        else {
-            alert('You must write the name first, try again.')
-        }
-    });
+function addMember() {
+    let inputValue = document.querySelector('.input-member').value;
+    if (inputValue != "") {
+        model.addMember(inputValue);
+        inputValue = "";
+        createMembersList(model.members);
+    }
+    else {
+        alert('You must write the name first, try again.')
+    }
 }
 
 function deleteMember(eventTarget) {
@@ -207,6 +206,10 @@ function registerEvents() {
 
         if (event.target.classList.contains('btn-dlt-member')) {
             deleteMember(event.target);
+        }
+
+        if (event.target.classList.contains('btn-add-member')) {
+            addMember();
         }
     });
 }

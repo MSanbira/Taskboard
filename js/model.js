@@ -165,7 +165,7 @@ const model = {
     addMember: function (fullName) {
         let newMember = {
             id: model.idGenerator(),
-            fullName: fullName
+            fullName: fullName.trim()
         }
         model.members.push(newMember);
     },
