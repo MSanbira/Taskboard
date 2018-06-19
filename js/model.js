@@ -58,17 +58,6 @@ const model = {
                     members: []
                 }
             ]
-        },
-        {
-            id: '_qfpkrwmq1',
-            title: 'one more',
-            cards: [
-                {
-                    id: '_0n2j4tjzc',
-                    text: 'ok cool',
-                    members: []
-                }
-            ]
         }
     ],
 
@@ -130,7 +119,7 @@ const model = {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === listIdOld) {
                 for (let j = 0; j < model.lists[i].cards.length; j++) {
-                    if (model.lists[i].cards[j] === cardId) {
+                    if (model.lists[i].cards[j].id === cardId) {
                         if (listIdOld === listIdNew) {
                             model.lists[i].cards.splice(j, 1, newCard);
                         }
@@ -163,7 +152,7 @@ const model = {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === listId) {
                 for (let j = 0; j < model.lists[i].cards.length; j++) {
-                    if (model.lists[i].cards[j] === cardId) {
+                    if (model.lists[i].cards[j].id === cardId) {
                         model.lists[i].cards.splice(j, 1);
                         break;
                     }
