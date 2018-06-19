@@ -107,6 +107,16 @@ const model = {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === listId) {
                 model.lists[i].cards.push(newCard);
+                break;
+            }
+        }
+    },
+
+    editListTitle: function (ListTitle, listId) {
+        for (let i = 0; i < model.lists.length; i++) {
+            if (model.lists[i].id === listId) {
+                model.lists[i].title = ListTitle;
+                break;
             }
         }
     },
@@ -135,6 +145,7 @@ const model = {
                         break;
                     }
                 }
+                break;
             }
         }
     },
@@ -143,6 +154,20 @@ const model = {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === id) {
                 model.lists.splice(i, 1);
+                break;
+            }
+        }
+    },
+
+    deleteCard: function (cardId, listId) {
+        for (let i = 0; i < model.lists.length; i++) {
+            if (model.lists[i].id === listId) {
+                for (let j = 0; j < model.lists[i].cards.length; j++) {
+                    if (model.lists[i].cards[j] === cardId) {
+                        model.lists[i].cards.splice(j, 1);
+                        break;
+                    }
+                }
                 break;
             }
         }
