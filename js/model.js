@@ -176,9 +176,18 @@ const model = {
     addMember: function (fullName) {
         let newMember = {
             id: model.idGenerator(),
-            "fullName": fullName
+            fullName: fullName
         }
         model.members.push(newMember);
+    },
+
+    editMember: function (fullName, memberId) {
+        for (let i = 0; i < model.members.length; i++) {
+            if (model.members[i].id === memberId) {
+                model.members[i].fullName = fullName;
+                break;
+            }
+        }
     },
 
     deleteMember: function (id) {
