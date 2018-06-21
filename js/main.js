@@ -13,7 +13,7 @@ function createBoard(listsArr) {
 function createList(list) {
     let cardsHTML = '';
     if (list.cards.length === 0) {
-        cardsHTML = '<button class="btn btn-secondary btn-add-card">Add a card...</button>'
+        cardsHTML = `<button class="btn btn-secondary btn-add-card" data-list-id="${list.id}">Add a card...</button>`
     }
     else {
         for (const card of list.cards) {
@@ -38,7 +38,7 @@ function createList(list) {
         </div>
 
         <div class="card-footer">
-            <p class="mb-0">Add a card...</p>
+            <p class="mb-0 btn-add-card" data-list-id="${list.id}">Add a card...</p>
         </div>
 
     </section>`;
@@ -132,6 +132,49 @@ function createMember(member) {
     return memberHTML;
 }
 
+// UI card edit
+
+function createAddCardPopup(listId) {
+    let addCardPopupHTML = `<div class="card-edit-container">
+        <div class="card-edit-head">
+            <h5>Add Card</h5>
+            <button class="btn btn-exit">x</button>
+        </div>
+        <form class="card-edit-body">
+            <section class="form-group row">
+                <label class="col-md-2" for="cardText">Card text:</label>
+                <textarea class="form-control col-md-10" id="cardText" rows="3" maxlength="350"></textarea>
+            </section>
+            <section class="row">
+                <label class="col-md-2">Members:</label>
+                <div class="card-members-input col-md-10">
+                    ${createMembersForCardAdd()}
+                </div>
+            </section>
+        </form>
+        <div class="card-edit-footer">
+            <button class="btn btn-secondary cancel-edit-card">Cancel</button>
+            <button class="btn btn-primary save-add-card" data-list-id="${listId}">Save changes</button>
+        </div>
+    </div>`;
+    document.querySelector('.card-edit-wrapper').innerHTML = addCardPopupHTML;
+    document.querySelector('.card-edit-wrapper').classList.add('show');
+}
+
+function createMembersForCardAdd() {
+    let membersForCardAddHTML = '';
+    for (const member of model.members) {
+        let memberForCardAddHTML = `<div class="form-check">
+            <input class="form-check-input" type="checkbox" id="${member.id}">
+            <label class="form-check-label" for="${member.id}">
+                ${member.fullName}
+            </label>
+        </div>`;
+        membersForCardAddHTML += memberForCardAddHTML;
+    }
+    return membersForCardAddHTML;
+}
+
 // board functions
 
 // lists
@@ -140,7 +183,7 @@ function addList() {
     model.addList();
     createBoard(model.lists);
     let listsTitle = document.querySelectorAll('.list-title');
-    editListTitle(listsTitle[listsTitle.length-1]);
+    editListTitle(listsTitle[listsTitle.length - 1]);
 }
 
 function editListTitle(eventTarget) {
@@ -175,7 +218,7 @@ function hideEditListTitle(eventTarget) {
                     model.editListTitle('(no title)', input[i].getAttribute('data-list-id'))
                     createBoard(model.lists);
                 }
-            }  
+            }
         }
     }
 }
@@ -207,8 +250,35 @@ function deleteList(eventTarget) {
 
 //cards
 
-function addCard() {
+function addCard(eventTarget) {
+    createAddCardPopup(eventTarget.getAttribute('data-list-id'));
+    document.querySelector('.save-add-card').addEventListener('click', (event) => {
+        let listId = event.target.getAttribute('data-list-id');
+        let cardText = document.querySelector('#cardText').value;
+        let cardMembers = getMembers(document.querySelectorAll('.card-members-input input'));
+        if (cardText !== '') {
+            model.addCard(cardText, cardMembers, listId);
+            hideCardEditPopup();
+            createBoard(model.lists);
+        }
+        else {
+            alert('Please enter card text first');
+        }
+    });
+}
 
+function getMembers(input) {
+    let members = [];
+    for (const i of input) {
+        if (i.checked) {
+            members.push(i.getAttribute('id'));
+        }
+    }
+    return members;
+}
+
+function hideCardEditPopup() {
+    document.querySelector('.card-edit-wrapper').classList.remove('show');
 }
 
 // members functions
@@ -265,7 +335,7 @@ function registerEvents() {
 
         if (event.target.classList.contains('btn-add-list')) {
             addList();
-        } 
+        }
 
         if (event.target.classList.contains('list-title')) {
             editListTitle(event.target);
@@ -283,6 +353,9 @@ function registerEvents() {
             addCard(event.target);
         }
 
+        if (event.target.classList.contains('cancel-edit-card')) {
+            hideCardEditPopup();
+        }
 
         // members
 
