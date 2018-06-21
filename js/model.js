@@ -51,13 +51,7 @@ const model = {
         {
             id: '_37crd17o8',
             title: 'in prog',
-            cards: [
-                {
-                    id: '_qpkgj1c9b',
-                    text: 'Transatlantic is the best band!',
-                    members: []
-                }
-            ]
+            cards: []
         }
     ],
 
@@ -78,10 +72,10 @@ const model = {
         return '_' + Math.random().toString(36).substr(2, 9);
     },
 
-    addList: function (title) {
+    addList: function () {
         let newList = {
             id: model.idGenerator(),
-            title: title.trim(),
+            title: '',
             cards: []
         }
         model.lists.push(newList);
@@ -101,11 +95,17 @@ const model = {
         }
     },
 
-    editListTitle: function (ListTitle, listId) {
+    editListTitle: function (listTitle, listId) {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === listId) {
-                model.lists[i].title = ListTitle.trim();
-                break;
+                if (listTitle == '') {
+                    model.lists[i].title = '(no title)';
+                    break;
+                }
+                else {
+                    model.lists[i].title = listTitle.trim();
+                    break;
+                }
             }
         }
     },

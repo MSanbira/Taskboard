@@ -79,9 +79,14 @@ nav img {
     display: block;
 }
 
-.btn-add {
+.btn-add-list {
     width: 250px;
     flex-shrink: 1;
+}
+
+.btn-add-card {
+    width: 100%;
+    text-align: left;
 }
 
 .btn-dlt-list {
@@ -107,6 +112,10 @@ nav img {
     min-height: 250px;
     width: fit-content;
     display: flex;
+}
+
+.list-title:hover {
+    cursor: pointer;
 }
 
 /* members */

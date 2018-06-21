@@ -7,20 +7,25 @@ function createBoard(listsArr) {
         listsHTML += createList(list);
     }
     document.querySelector(".taskboard-board").innerHTML = listsHTML +
-        '<button class="btn btn-info m-2 col-lg-2 text-left btn-add">Add a list...</button>';
+        '<button class="btn btn-info m-2 col-lg-2 text-left btn-add-list">Add a list...</button>';
 }
 
 function createList(list) {
     let cardsHTML = '';
-    for (const card of list.cards) {
-        cardsHTML += createCard(card);
+    if (list.cards.length === 0) {
+        cardsHTML = '<button class="btn btn-info btn-add-card">Add a card...</button>'
+    }
+    else {
+        for (const card of list.cards) {
+            cardsHTML += createCard(card);
+        }
     }
     const listHTML = `<section class="card m-2 p-0 taskboard-list">
 
         <div class="d-flex card-header justify-content-between align-items-center">
             <div>
                 <h5 class="list-title show">${list.title}</h5>
-                <input class="form-control form-control input-list-title" type="text" placeholder="List Name" data-list-id="${list.id}">
+                <input class="form-control form-control input-list-title" type="text" maxlength="14" placeholder="List Name" data-list-id="${list.id}">
             </div>
             <div class="position-relative btn-scroll">
                 <button class="btn btn-light bg-white border list-options-toggle-btn">&#9662</button>
@@ -129,6 +134,13 @@ function createMember(member) {
 
 // board functions
 
+function addList() {
+    model.addList();
+    createBoard(model.lists);
+    let listsTitle = document.querySelectorAll('.list-title');
+    editListTitle(listsTitle[listsTitle.length-1]);
+}
+
 function editListTitle(eventTarget) {
     let title = eventTarget;
     let input = eventTarget.parentElement.querySelector('.input-list-title');
@@ -142,6 +154,10 @@ function editListTitle(eventTarget) {
             model.editListTitle(input.value, input.getAttribute('data-list-id'))
             createBoard(model.lists);
         }
+        if (input.value == '') {
+            model.editListTitle('(no title)', input.getAttribute('data-list-id'))
+            createBoard(model.lists);
+        }
     });
 }
 
@@ -153,7 +169,11 @@ function hideEditListTitle(eventTarget) {
             if (!title[i].classList.contains('show')) {
                 title[i].classList.add('show');
                 input[i].classList.remove('show');
-            }
+                if (input[i].value == '') {
+                    model.editListTitle('(no title)', input[i].getAttribute('data-list-id'))
+                    createBoard(model.lists);
+                }
+            }  
         }
     }
 }
@@ -246,6 +266,10 @@ function registerEvents() {
         if (event.target.classList.contains('btn-dlt-list')) {
             deleteList(event.target);
         }
+
+        if (event.target.classList.contains('btn-add-list')) {
+            addList();
+        } 
 
         // members
 
