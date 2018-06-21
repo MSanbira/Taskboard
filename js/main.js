@@ -13,7 +13,7 @@ function createBoard(listsArr) {
 function createList(list) {
     let cardsHTML = '';
     if (list.cards.length === 0) {
-        cardsHTML = '<button class="btn btn-info btn-add-card">Add a card...</button>'
+        cardsHTML = '<button class="btn btn-secondary btn-add-card">Add a card...</button>'
     }
     else {
         for (const card of list.cards) {
@@ -49,7 +49,7 @@ function createCard(card) {
     let cardHTML = '';
     if (card.members.length == 0) {
         cardHTML = `<div class="border border-info rounded p-3 mb-3 taskboard-card">
-        <button class="btn-edit">Edit card</button>
+        <button class="btn-edit-card">Edit card</button>
 
         <p class="mb-4">${card.text}</p>
 
@@ -58,7 +58,7 @@ function createCard(card) {
     else {
         const initialsHTML = createCardInitials(card.members);
         cardHTML = `<div class="border border-info rounded p-3 mb-3 taskboard-card">
-        <button class="btn-edit">Edit card</button>
+        <button class="btn-edit-card">Edit card</button>
 
         <p class="mb-4">${card.text}</p>
 
@@ -107,7 +107,7 @@ function createMembersList(members) {
     }
     document.querySelector(".members-list").innerHTML = membersHTML +
         `<li class="list-group-item d-flex align-content-center">
-        <input class="form-control form-control-lg mr-2 input-member" type="text" placeholder="Add new member">
+        <input class="form-control form-control-lg mr-2 input-member" maxlength="25" type="text" placeholder="Add new member">
         <button class="btn btn-primary btn-add-member">Add</button>
     </li>`;
 }
@@ -133,6 +133,8 @@ function createMember(member) {
 }
 
 // board functions
+
+// lists
 
 function addList() {
     model.addList();
@@ -203,6 +205,12 @@ function deleteList(eventTarget) {
     }
 }
 
+//cards
+
+function addCard() {
+
+}
+
 // members functions
 
 function addMember() {
@@ -255,6 +263,10 @@ function registerEvents() {
 
         hideEditListTitle(event.target);
 
+        if (event.target.classList.contains('btn-add-list')) {
+            addList();
+        } 
+
         if (event.target.classList.contains('list-title')) {
             editListTitle(event.target);
         }
@@ -267,9 +279,10 @@ function registerEvents() {
             deleteList(event.target);
         }
 
-        if (event.target.classList.contains('btn-add-list')) {
-            addList();
-        } 
+        if (event.target.classList.contains('btn-add-card')) {
+            addCard(event.target);
+        }
+
 
         // members
 

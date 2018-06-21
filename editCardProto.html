@@ -1,0 +1,50 @@
+<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+
+
+<div class="card-edit-wrapper">
+    <div class="card-edit-container">
+        <div class="card-edit-head">
+            <h5>Edit</h5>
+            <button class="btn btn-exit">x</button>
+        </div>
+        <form class="card-edit-body">
+            <section class="form-group row">
+                <label class="col-md-2" for="cardText">Card text:</label>
+                <textarea class="form-control col-md-10" id="cardText" rows="3"></textarea>
+            </section>
+            <section class="form-group row">
+                <label class="col-md-2" for="moveTo">Move to:</label>
+                <select class="form-control col-md-10" id="moveTo">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </section>
+            <section class="row">
+                <label class="col-md-2">Members:</label>
+                <div class="card-members-input col-md-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="_sioy9cpwk">
+                        <label class="form-check-label" for="_sioy9cpwk">
+                            Matan Nahoom Sanbira
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="_6jo650ic4">
+                        <label class="form-check-label" for="_6jo650ic4">
+                            Dima V
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <button class="btn btn-danger btn-dlt-card" data-card-id="*">Delete card</button>
+        </form>
+        <div class="card-edit-footer">
+            <button class="btn btn-secondary Cancel-edit-card">Cancel</button>
+            <button class="btn btn-primary" data-card-id="*">Save changes</button>
+        </div>
+    </div>
+</div>

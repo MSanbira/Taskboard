@@ -1,7 +1,22 @@
 
+/* general */
+
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.taskboard-board {
+    height: calc(100vh - 115px);
+    min-height: 250px;
+    width: fit-content;
+    display: flex;
+}
+
+.show {
+    display: block!important;
+}
+
+/* heder */
 
 header nav {
     border-bottom: 0.5px solid lightgray;
@@ -24,9 +39,35 @@ nav img {
     height: 45px;
 }
 
+.btn-nav {
+    background-color: inherit;
+    border: none;
+    height: 100%;
+    padding: 0 15px;
+}
+
+.btn-nav:hover {
+    background-color: whitesmoke;
+    transition: 0.5s;
+}
+
+/* lists */
+
 .list-title, .input-list-title {
     display: none;
 }
+
+.card-body {
+    overflow: auto;
+}
+
+.taskboard-list {
+    max-height: 100%;
+    width: 250px;
+    flex-shrink: 1;
+}
+
+/* cards */
 
 .card-member {
     display: block;
@@ -39,25 +80,80 @@ nav img {
     margin-left: 10px; 
 }
 
-.card-body {
-    overflow: auto;
-}
-
-.card {
-    max-height: 100%;
-    width: 250px;
-    flex-shrink: 1;
-}
-
 .taskboard-card {
     position: relative;
 }
+
+/* card edit*/
+
+.card-edit-wrapper {
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.card-edit-container {
+    background-color: white;
+    min-width: 400px;
+    width: 700px;
+    height: auto;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    position: relative;
+    margin: 50px auto;
+    z-index: 30;
+}
+
+.card-edit-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #ced4da;
+    padding: 15px 30px;
+}
+
+.card-edit-body {
+    padding: 30px;
+    margin: 0;
+}
+
+.card-edit-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #ced4da;
+    padding: 15px 30px;
+}
+
+.card-edit-footer .btn {
+    margin-left: 15px;
+}
+
+.card-members-input {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 6px 12px;
+    margin-bottom: 30px;
+    overflow: auto;
+    max-height: 100px;
+}
+
+.btn-exit {
+    background: none;
+    border: none;
+    color: #ced4da;
+    font-weight: bold;
+}
+
+/* btns */
 
 .btn-info {
     background-color: #96cde9;
 }
 
-.btn-edit {
+.btn-edit-card {
     font-size: 12px;
     color: white;
     padding: 2px 5px;
@@ -71,11 +167,11 @@ nav img {
     display: none;
 }
 
-.btn-edit:hover {
+.btn-edit-card:hover {
     background-color: #2AA8D3;
 }
 
-.taskboard-card:hover .btn-edit {
+.taskboard-card:hover .btn-edit-card {
     display: block;
 }
 
@@ -93,25 +189,6 @@ nav img {
     z-index: 20;
     right: 0;
     display: none;
-}
-
-.btn-nav {
-    background-color: inherit;
-    border: none;
-    height: 100%;
-    padding: 0 15px;
-}
-
-.btn-nav:hover {
-    background-color: whitesmoke;
-    transition: 0.5s;
-}
-
-.taskboard-board {
-    height: calc(100vh - 115px);
-    min-height: 250px;
-    width: fit-content;
-    display: flex;
 }
 
 .list-title:hover {
@@ -156,8 +233,4 @@ nav img {
 
 .confirm-edit {
     display: none;
-}
-
-.show {
-    display: block!important;
 }
