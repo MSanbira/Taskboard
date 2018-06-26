@@ -20,6 +20,10 @@ li {
     display: block!important;
 }
 
+.show-flex {
+    display: flex!important;
+}
+
 /* heder */
 
 header nav {
@@ -231,7 +235,7 @@ nav img {
 }
 
 .member {
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     height: 50px;
@@ -251,8 +255,4 @@ nav img {
 
 .member:hover .btn-hover {
     display: block;
-}
-
-.confirm-edit {
-    display: none;
 }

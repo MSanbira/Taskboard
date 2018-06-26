@@ -117,18 +117,18 @@ function createMembersList(members) {
 }
 
 function createMember(member) {
-    let memberHTML = `<li class="list-group-item">
-        <div class="member">
-            <span>${member.fullName.trim()}</span>
+    let memberHTML = `<li class="list-group-item member-li">
+        <div class="member show-flex member-display">
+            <span class="member-full-name">${member.fullName.trim()}</span>
             <div class="btn-hover">
                 <button class="btn btn-info btn-edit-member" data-member-id="${member.id}">Edit</button>
                 <button class="btn btn-danger btn-dlt-member" data-member-id="${member.id}">Delete</button>
             </div>
         </div>
         <div class="member confirm-edit">
-            <input class="form-control form-control-lg mr-2 edit-member" type="text">
+            <input class="form-control form-control-lg mr-2 edit-member" type="text" maxlength="25">
             <div class="btn-confirm-edit">
-                <button class="btn btn-light btn-cancel-member" data-member-id="${member.id}">Cancel</button>
+                <button class="btn btn-light btn-cancel-member">Cancel</button>
                 <button class="btn btn-success btn-save-member" data-member-id="${member.id}">Save</button>
             </div>
         </div>
@@ -136,7 +136,7 @@ function createMember(member) {
     return memberHTML;
 }
 
-// UI card edit
+// UI card modal
 
 function createAddCardModal(listId) {
     let addCardPopupHTML = `<div class="modal-backdrop">
@@ -446,7 +446,31 @@ function addMember() {
     }
 }
 
+function editMember(eventTarget) {
+    let memberEdit = eventTarget.parentElement.parentElement.parentElement.querySelector('.confirm-edit');
+    let memberInput = eventTarget.parentElement.parentElement.parentElement.querySelector('.edit-member');
+    let memberDisplay = eventTarget.parentElement.parentElement;
+    memberInput.value = memberDisplay.querySelector('.member-full-name').innerText;
+    memberEdit.classList.add('show-flex');
+    memberDisplay.classList.remove('show-flex');
+    memberEdit.querySelector('.btn-save-member').addEventListener('click', (event) => {
+        if(confirm('Are you sure?')) {
+            model.editMember(memberInput.value, event.target.getAttribute('data-member-id'));
+            createMembersList(model.members);
+            createBoard(model.lists);
+            hideEditMember();
+        }
+    });
+}
 
+function hideEditMember() {
+    let memberEdit = document.querySelectorAll('.confirm-edit');
+    let memberDisplay = document.querySelectorAll('.member-display');
+    for (let i = 0; i < memberEdit.length; i++) {
+        memberEdit[i].classList.remove('show-flex');
+        memberDisplay[i].classList.add('show-flex');
+    }
+}
 
 function deleteMember(eventTarget) {
     if (confirm('Are you sure?')) {
@@ -456,20 +480,7 @@ function deleteMember(eventTarget) {
     }
 }
 
-// function editMemberEventListener() {
-//     let btnEditMember = document.querySelectorAll('.btn-edit-member');
-//     let saveEdit = document.querySelectorAll('.btn-save-member');
-//     let cancelEdit = document.querySelectorAll('.btn-cancel-member');
-//     for (let i = 0; i < btnEditMember.length; i++) {
-//         btnEditMember[i].addEventListener('click', (event) => {
-//             event.target.parentElement.parentElement.style.display = 'none';
-//             event.target.parentElement.parentElement.parentElement.querySelector('.confirm-edit').style.display = 'flex';
-//         });
-//     }
-//     // todo : continiu
-// }
-
-// init + event listeners
+// init + events
 
 function init() {
     createMembersList(model.members);
@@ -516,12 +527,20 @@ function registerEvents() {
 
         // members
 
-        if (event.target.classList.contains('btn-dlt-member')) {
-            deleteMember(event.target);
-        }
-
         if (event.target.classList.contains('btn-add-member')) {
             addMember();
+        }
+
+        if (!event.target.classList.contains('confirm-edit') && !event.target.classList.contains('edit-member') && !event.target.classList.contains('member-li') && !event.target.classList.contains('btn-save-member')) {
+            hideEditMember();
+        }
+
+        if (event.target.classList.contains('btn-edit-member')) {
+            editMember(event.target);
+        }        
+
+        if (event.target.classList.contains('btn-dlt-member')) {
+            deleteMember(event.target);
         }
     });
 }
