@@ -12,6 +12,10 @@ body {
     display: flex;
 }
 
+li {
+    list-style: none;    
+}
+
 .show {
     display: block!important;
 }
@@ -28,7 +32,6 @@ header nav {
 
 nav ul {
     display: flex;
-    list-style: none;
     height: 100%;
     padding-left: 10px;
     margin-bottom: 0;
@@ -67,6 +70,13 @@ nav img {
     flex-shrink: 1;
 }
 
+.list-options-toggle {
+    z-index: 20;
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
 /* cards */
 
 .card-member {
@@ -88,12 +98,22 @@ nav img {
 
 .card-edit-wrapper {
     display: none;
-    background: rgba(0, 0, 0, 0.7);
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
+}
+
+.outer-modal {
+    display: none;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 30;
 }
 
 .card-edit-container {
@@ -105,7 +125,7 @@ nav img {
     border-radius: .25rem;
     position: relative;
     margin: 50px auto;
-    z-index: 30;
+    z-index: 40;
 }
 
 .card-edit-head {
@@ -185,12 +205,6 @@ nav img {
     width: 100%;
     text-align: left;
     cursor: pointer;
-}
-
-.btn-dlt-list {
-    z-index: 20;
-    right: 0;
-    display: none;
 }
 
 .list-title:hover {

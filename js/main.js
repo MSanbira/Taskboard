@@ -29,7 +29,11 @@ function createList(list) {
             </div>
             <div class="position-relative btn-scroll">
                 <button class="btn btn-light bg-white border list-options-toggle-btn">&#9662</button>
-                <button class="btn btn-light position-absolute bg-white border btn-dlt-list" data-list-id="${list.id}">Delete list</button>
+                <ul class="list-options-toggle">
+                    <li>
+                    <button class="btn btn-light bg-white border btn-dlt-list" data-list-id="${list.id}">Delete list</button>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -134,8 +138,10 @@ function createMember(member) {
 
 // UI card edit
 
-function createAddCardPopup(listId) {
-    let addCardPopupHTML = `<div class="card-edit-container">
+function createAddCardModal(listId) {
+    let addCardPopupHTML = `<div class="outer-modal">
+        </div>
+    <div class="card-edit-container">
         <div class="card-edit-head">
             <h5>Add Card</h5>
             <button class="btn btn-exit">x</button>
@@ -159,6 +165,7 @@ function createAddCardPopup(listId) {
     </div>`;
     document.querySelector('.card-edit-wrapper').innerHTML = addCardPopupHTML;
     document.querySelector('.card-edit-wrapper').classList.add('show');
+    document.querySelector('.outer-modal').classList.add('show');
 }
 
 function createMembersForCardAdd() {
@@ -224,13 +231,13 @@ function hideEditListTitle(eventTarget) {
 }
 
 function toggleDeleteList(eventTarget) {
-    eventTarget.parentElement.querySelector('.btn-dlt-list').classList.toggle('show');
-    eventTarget.classList.toggle('show');
+    eventTarget.parentElement.querySelector('.list-options-toggle').classList.toggle('show');
+    eventTarget.classList.toggle('extended');
 }
 
 function hideDeleteListBtn(eventTarget) {
-    if (!eventTarget.classList.contains('list-options-toggle-btn') || !eventTarget.classList.contains('show')) {
-        let btnDeleteList = document.querySelectorAll('.btn-dlt-list');
+    if (!eventTarget.classList.contains('list-options-toggle-btn') || !eventTarget.classList.contains('extended')) {
+        let btnDeleteList = document.querySelectorAll('.list-options-toggle');
         let btnDeleteListToggle = document.querySelectorAll('.list-options-toggle-btn');
         for (const btn of btnDeleteList) {
             btn.classList.remove('show');
@@ -251,7 +258,7 @@ function deleteList(eventTarget) {
 //cards
 
 function addCard(eventTarget) {
-    createAddCardPopup(eventTarget.getAttribute('data-list-id'));
+    createAddCardModal(eventTarget.getAttribute('data-list-id'));
     document.querySelector('.save-add-card').addEventListener('click', (event) => {
         let listId = event.target.getAttribute('data-list-id');
         let cardText = document.querySelector('#cardText').value;
@@ -279,6 +286,7 @@ function getMembers(input) {
 
 function hideCardEditPopup() {
     document.querySelector('.card-edit-wrapper').classList.remove('show');
+    document.querySelector('.outer-modal').classList.remove('show');
 }
 
 // members functions
@@ -353,7 +361,7 @@ function registerEvents() {
             addCard(event.target);
         }
 
-        if (event.target.classList.contains('cancel-edit-card')) {
+        if (event.target.classList.contains('cancel-edit-card') || event.target.classList.contains('btn-exit') || event.target.classList.contains('outer-modal')) {
             hideCardEditPopup();
         }
 
