@@ -77,6 +77,11 @@ nav img {
     right: 0;
 }
 
+.card-footer:hover {
+    background-color: #bfbfbf;
+    transition: 0.5s;
+}
+
 /* cards */
 
 .card-member {
@@ -105,7 +110,7 @@ nav img {
     bottom: 0;
 }
 
-.outer-modal {
+.modal-backdrop {
     display: none;
     background: rgba(0, 0, 0, 0.7);
     position: absolute;
@@ -190,6 +195,7 @@ nav img {
 
 .btn-edit-card:hover {
     background-color: #2AA8D3;
+    transition: 0.5s;
 }
 
 .taskboard-card:hover .btn-edit-card {

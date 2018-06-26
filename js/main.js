@@ -17,7 +17,7 @@ function createList(list) {
     }
     else {
         for (const card of list.cards) {
-            cardsHTML += createCard(card);
+            cardsHTML += createCard(card, list.id);
         }
     }
     const listHTML = `<section class="card m-2 p-0 taskboard-list">
@@ -49,11 +49,11 @@ function createList(list) {
     return listHTML;
 }
 
-function createCard(card) {
+function createCard(card, listId) {
     let cardHTML = '';
     if (card.members.length == 0) {
         cardHTML = `<div class="border border-info rounded p-3 mb-3 taskboard-card">
-        <button class="btn-edit-card">Edit card</button>
+        <button class="btn-edit-card" data-list-id="${listId}" data-card-id="${card.id}">Edit card</button>
 
         <p class="mb-4">${card.text}</p>
 
@@ -62,7 +62,7 @@ function createCard(card) {
     else {
         const initialsHTML = createCardInitials(card.members);
         cardHTML = `<div class="border border-info rounded p-3 mb-3 taskboard-card">
-        <button class="btn-edit-card">Edit card</button>
+        <button class="btn-edit-card" data-list-id="${listId}" data-card-id="${card.id}">Edit card</button>
 
         <p class="mb-4">${card.text}</p>
 
@@ -139,7 +139,7 @@ function createMember(member) {
 // UI card edit
 
 function createAddCardModal(listId) {
-    let addCardPopupHTML = `<div class="outer-modal">
+    let addCardPopupHTML = `<div class="modal-backdrop">
         </div>
     <div class="card-edit-container">
         <div class="card-edit-head">
@@ -165,7 +165,44 @@ function createAddCardModal(listId) {
     </div>`;
     document.querySelector('.card-edit-wrapper').innerHTML = addCardPopupHTML;
     document.querySelector('.card-edit-wrapper').classList.add('show');
-    document.querySelector('.outer-modal').classList.add('show');
+    document.querySelector('.modal-backdrop').classList.add('show');
+}
+
+function createEditCardModal(cardId, listId) {
+    let addCardPopupHTML = `<div class="modal-backdrop">
+        </div>
+    <div class="card-edit-container">
+        <div class="card-edit-head">
+            <h5>Add Card</h5>
+            <button class="btn btn-exit">x</button>
+        </div>
+        <form class="card-edit-body">
+            <section class="form-group row">
+                <label class="col-md-2" for="cardText">Card text:</label>
+                <textarea class="form-control col-md-10" id="cardText" rows="3" maxlength="350">${getCardTextById(cardId)}</textarea>
+            </section>
+            <section class="form-group row">
+                <label class="col-md-2" for="moveTo">Move to:</label>
+                <select class="form-control col-md-10" id="moveTo">
+                    ${createListsForCardEdit(listId)}
+                </select>
+            </section>
+            <section class="row">
+                <label class="col-md-2">Members:</label>
+                <div class="card-members-input col-md-10">
+                    ${createMembersForCardEdit(cardId)}
+                </div>
+            </section>
+            <button class="btn btn-danger btn-dlt-card" data-card-id="${cardId}" data-list-id="${listId}">Delete card</button>
+        </form>
+        <div class="card-edit-footer">
+            <button class="btn btn-secondary cancel-edit-card">Cancel</button>
+            <button class="btn btn-primary save-edit-card" data-list-id="${listId}" data-card-id="${cardId}">Save changes</button>
+        </div>
+    </div>`;
+    document.querySelector('.card-edit-wrapper').innerHTML = addCardPopupHTML;
+    document.querySelector('.card-edit-wrapper').classList.add('show');
+    document.querySelector('.modal-backdrop').classList.add('show');
 }
 
 function createMembersForCardAdd() {
@@ -180,6 +217,77 @@ function createMembersForCardAdd() {
         membersForCardAddHTML += memberForCardAddHTML;
     }
     return membersForCardAddHTML;
+}
+
+function createListsForCardEdit(listId) {
+    let listsForCardEditHTML = '';
+    for (const list of model.lists) {
+        let listForCardAddHTML = '';
+        if (list.id === listId) {
+            listForCardAddHTML = `<option data-list-id="${list.id}" selected>${list.title}</option>`;
+        }
+        else {
+            listForCardAddHTML = `<option data-list-id="${list.id}">${list.title}</option>`;
+        }
+        listsForCardEditHTML += listForCardAddHTML;
+    }
+    return listsForCardEditHTML;
+}
+
+function createMembersForCardEdit(cardId) {
+    let checkedMembers = getMembersByCardId(cardId);
+    let membersForCardEditHTML = '';
+    for (let i = 0; i < model.members.length; i++) {
+        let memberTest = 0;
+        let memberForCardEditHTML = '';
+        for (let j = 0; j < checkedMembers.length; j++) {
+            if (model.members[i].id === checkedMembers[j]) {
+                memberTest++;
+            }
+        }
+        if (memberTest === 1) {
+            memberForCardEditHTML = `<div class="form-check">
+                <input class="form-check-input" type="checkbox" id="${model.members[i].id}" checked>
+                <label class="form-check-label" for="${model.members[i].id}">
+                    ${model.members[i].fullName}
+                </label>
+            </div>`;
+        }
+        else {
+            memberForCardEditHTML = `<div class="form-check">
+                <input class="form-check-input" type="checkbox" id="${model.members[i].id}">
+                <label class="form-check-label" for="${model.members[i].id}">
+                    ${model.members[i].fullName}
+                </label>
+            </div>`;
+        }
+        membersForCardEditHTML += memberForCardEditHTML;
+    }
+    return membersForCardEditHTML;
+}
+
+function getMembersByCardId(cardId) {
+    for (let i = 0; i < model.lists.length; i++) {
+        for (let j = 0; j < model.lists[i].cards.length; j++) {
+            if (model.lists[i].cards[j].id === cardId) {
+                return model.lists[i].cards[j].members;
+                i = model.lists.length;
+                break;
+            }
+        }
+    }
+}
+
+function getCardTextById(cardId) {
+    for (let i = 0; i < model.lists.length; i++) {
+        for (let j = 0; j < model.lists[i].cards.length; j++) {
+            if (model.lists[i].cards[j].id === cardId) {
+                return model.lists[i].cards[j].text;
+                i = model.lists.length;
+                break;
+            }
+        }
+    }
 }
 
 // board functions
@@ -265,11 +373,37 @@ function addCard(eventTarget) {
         let cardMembers = getMembers(document.querySelectorAll('.card-members-input input'));
         if (cardText !== '') {
             model.addCard(cardText, cardMembers, listId);
-            hideCardEditPopup();
+            hideCardEditModal();
             createBoard(model.lists);
         }
         else {
             alert('Please enter card text first');
+        }
+    });
+}
+
+function editCard(eventTarget) {
+    createEditCardModal(eventTarget.getAttribute('data-card-id'), eventTarget.getAttribute('data-list-id'));
+    document.querySelector('.save-edit-card').addEventListener('click', (event) => {
+        let cardId = event.target.getAttribute('data-card-id');
+        let listIdOld = event.target.getAttribute('data-list-id');
+        let cardText = document.querySelector('#cardText').value;
+        let cardMembers = getMembers(document.querySelectorAll('.card-members-input input'));
+        let listIdNew = getListIdNew(document.querySelectorAll('#moveTo option'));
+        if (cardText !== '') {
+            model.editCard(cardId, cardText, cardMembers, listIdOld, listIdNew);
+            hideCardEditModal();
+            createBoard(model.lists);
+        }
+        else {
+            alert('Please enter card text first');
+        }
+    });
+    document.querySelector('.btn-dlt-card').addEventListener('click', (event) => {
+        if (confirm('Are you sure?')) {
+            model.deleteCard(event.target.getAttribute('data-card-id'), event.target.getAttribute('data-list-id'))
+            hideCardEditModal();
+            createBoard(model.lists);
         }
     });
 }
@@ -284,9 +418,18 @@ function getMembers(input) {
     return members;
 }
 
-function hideCardEditPopup() {
+function getListIdNew(input) {
+    for (const i of input) {
+        if (i.selected) {
+            return i.getAttribute('data-list-id');
+            break;
+        }
+    }
+}
+
+function hideCardEditModal() {
     document.querySelector('.card-edit-wrapper').classList.remove('show');
-    document.querySelector('.outer-modal').classList.remove('show');
+    document.querySelector('.modal-backdrop').classList.remove('show');
 }
 
 // members functions
@@ -302,6 +445,8 @@ function addMember() {
         alert('You must write the name first, try again.')
     }
 }
+
+
 
 function deleteMember(eventTarget) {
     if (confirm('Are you sure?')) {
@@ -361,8 +506,12 @@ function registerEvents() {
             addCard(event.target);
         }
 
-        if (event.target.classList.contains('cancel-edit-card') || event.target.classList.contains('btn-exit') || event.target.classList.contains('outer-modal')) {
-            hideCardEditPopup();
+        if (event.target.classList.contains('cancel-edit-card') || event.target.classList.contains('btn-exit') || event.target.classList.contains('modal-backdrop')) {
+            hideCardEditModal();
+        }
+
+        if (event.target.classList.contains('btn-edit-card')) {
+            editCard(event.target);
         }
 
         // members
