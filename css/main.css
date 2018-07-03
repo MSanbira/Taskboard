@@ -1,7 +1,30 @@
 
+/* general */
+
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.taskboard-board {
+    height: calc(100vh - 115px);
+    min-height: 250px;
+    width: fit-content;
+    display: flex;
+}
+
+li {
+    list-style: none;    
+}
+
+.show {
+    display: block!important;
+}
+
+.show-flex {
+    display: flex!important;
+}
+
+/* heder */
 
 header nav {
     border-bottom: 0.5px solid lightgray;
@@ -13,7 +36,6 @@ header nav {
 
 nav ul {
     display: flex;
-    list-style: none;
     height: 100%;
     padding-left: 10px;
     margin-bottom: 0;
@@ -22,68 +44,6 @@ nav ul {
 nav img {
     display: block;
     height: 45px;
-}
-
-.card-member {
-    display: block;
-    padding: 0 5px;
-    background-color: rgb(51, 122, 183);
-    font-size: 12px;
-    font-weight: 800;
-    color: white;
-    border-radius: 3px;
-    margin-left: 10px; 
-}
-
-.card-body {
-    overflow: auto;
-}
-
-.card {
-    max-height: 100%;
-    width: 250px;
-    flex-shrink: 1;
-}
-
-.taskboard-card {
-    position: relative;
-}
-
-.btn-info {
-    background-color: #96cde9;
-}
-
-.btn-edit {
-    font-size: 12px;
-    color: white;
-    padding: 2px 5px;
-    border: solid 0.1px #2C94B6;
-    border-radius: 3px;
-    background-color: #55B6E2;
-    position: absolute;
-    font-weight: 600;
-    top: 3px;
-    right: 3px;
-    display: none;
-}
-
-.btn-edit:hover {
-    background-color: #2AA8D3;
-}
-
-.taskboard-card:hover .btn-edit {
-    display: block;
-}
-
-.btn-add {
-    width: 250px;
-    flex-shrink: 1;
-}
-
-.btn-dlt-list {
-    z-index: 20;
-    right: 0;
-    display: none;
 }
 
 .btn-nav {
@@ -98,11 +58,167 @@ nav img {
     transition: 0.5s;
 }
 
-.taskboard-board {
-    height: calc(100vh - 115px);
-    min-height: 250px;
-    width: fit-content;
+/* lists */
+
+.list-title, .input-list-title {
+    display: none;
+}
+
+.card-body {
+    overflow: auto;
+}
+
+.taskboard-list {
+    max-height: 100%;
+    width: 250px;
+    flex-shrink: 1;
+}
+
+.list-options-toggle {
+    z-index: 20;
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
+.card-footer:hover {
+    background-color: #bfbfbf;
+    transition: 0.5s;
+}
+
+/* cards */
+
+.card-member {
+    display: block;
+    padding: 0 5px;
+    background-color: rgb(51, 122, 183);
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
+    border-radius: 3px;
+    margin-left: 10px; 
+}
+
+.taskboard-card {
+    position: relative;
+}
+
+/* card edit*/
+
+.card-edit-wrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.modal-backdrop {
+    display: none;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 30;
+}
+
+.card-edit-container {
+    background-color: white;
+    min-width: 400px;
+    width: 700px;
+    height: auto;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    position: relative;
+    margin: 50px auto;
+    z-index: 40;
+}
+
+.card-edit-head {
     display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #ced4da;
+    padding: 15px 30px;
+}
+
+.card-edit-body {
+    padding: 30px;
+    margin: 0;
+}
+
+.card-edit-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #ced4da;
+    padding: 15px 30px;
+}
+
+.card-edit-footer .btn {
+    margin-left: 15px;
+}
+
+.card-members-input {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 6px 12px;
+    margin-bottom: 30px;
+    overflow: auto;
+    max-height: 100px;
+}
+
+.btn-exit {
+    background: none;
+    border: none;
+    color: #ced4da;
+    font-weight: bold;
+}
+
+/* btns */
+
+.btn-info {
+    background-color: #96cde9;
+}
+
+.btn-edit-card {
+    font-size: 12px;
+    color: white;
+    padding: 2px 5px;
+    border: solid 0.1px #2C94B6;
+    border-radius: 3px;
+    background-color: #55B6E2;
+    position: absolute;
+    font-weight: 600;
+    top: 3px;
+    right: 3px;
+    display: none;
+}
+
+.btn-edit-card:hover {
+    background-color: #2AA8D3;
+    transition: 0.5s;
+}
+
+.taskboard-card:hover .btn-edit-card {
+    display: block;
+}
+
+.btn-add-list {
+    width: 250px;
+    flex-shrink: 1;
+}
+
+.btn-add-card {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.list-title:hover {
+    cursor: pointer;
 }
 
 /* members */
@@ -119,7 +235,7 @@ nav img {
 }
 
 .member {
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     height: 50px;
@@ -139,8 +255,4 @@ nav img {
 
 .member:hover .btn-hover {
     display: block;
-}
-
-.confirm-edit {
-    display: none;
 }
