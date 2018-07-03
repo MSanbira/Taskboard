@@ -471,10 +471,15 @@ function init() {
     createMembersList(model.members);
     createBoard(model.lists);
     registerEvents();
+    showSection();
 }
 
 function registerEvents() {
     document.addEventListener('click', (event) => {
+
+        if (event.target.classList.contains('btn-nav')) {
+            changeLocationHash(event.target);
+        }
 
         // board
 
@@ -534,19 +539,38 @@ function registerEvents() {
 
 // tabs
 
-function showSection(section) {
-    let btnNav = document.getElementsByClassName("btn-nav");
-    if (section == 'board') {
-        document.querySelector('.taskboard-board').style.display = "flex";
-        document.querySelector('.members-container').style.display = "none";
-        btnNav[0].style = "background-color: lightgray;";
-        btnNav[1].style = "";
+function changeLocationHash(eventTarget) {
+    const navTo = eventTarget.innerText;
+    window.location.hash = navTo;
+    window.location.reload(true);
+}
+
+function toggleBtnNavColor(openSection) {
+    const navBtn = document.querySelectorAll('.btn-nav');
+    for (const btn of navBtn) {
+        if ('#' + btn.innerText === openSection) {
+            btn.classList.add('btn-nav-open');
+        }
+        else {
+            btn.classList.remove('btn-nav-open');
+        }
+    }
+}
+
+function showSection() {
+    const board = document.querySelector('.taskboard-board');
+    const members = document.querySelector('.members-container');
+    toggleBtnNavColor(window.location.hash);
+    if (window.location.hash === '') {
+        window.location.hash = 'Board';
+    }
+    if (window.location.hash === '#Board') {
+        board.classList.add('show-flex');
+        members.classList.remove('show');
     }
     else {
-        document.querySelector('.taskboard-board').style.display = "none";
-        document.querySelector('.members-container').style.display = "block";
-        btnNav[1].style = "background-color: lightgray;";
-        btnNav[0].style = "";
+        board.classList.remove('show-flex');
+        members.classList.add('show');
     }
 }
 

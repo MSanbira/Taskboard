@@ -9,7 +9,7 @@ body {
     height: calc(100vh - 115px);
     min-height: 250px;
     width: fit-content;
-    display: flex;
+    display: none;
 }
 
 li {
@@ -51,6 +51,10 @@ nav img {
     border: none;
     height: 100%;
     padding: 0 15px;
+}
+
+.btn-nav-open {
+    background-color: lightgray;
 }
 
 .btn-nav:hover {
