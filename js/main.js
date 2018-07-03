@@ -144,7 +144,7 @@ function createAddCardModal(listId) {
     <div class="card-edit-container">
         <div class="card-edit-head">
             <h5>Add Card</h5>
-            <button class="btn btn-exit">x</button>
+            <button class="btn close-modal-btn">x</button>
         </div>
         <form class="card-edit-body">
             <section class="form-group row">
@@ -174,7 +174,7 @@ function createEditCardModal(cardId, listId) {
     <div class="card-edit-container">
         <div class="card-edit-head">
             <h5>Add Card</h5>
-            <button class="btn btn-exit">x</button>
+            <button class="btn close-modal-btn">x</button>
         </div>
         <form class="card-edit-body">
             <section class="form-group row">
@@ -490,7 +490,7 @@ function registerEvents() {
 
         if (event.target.classList.contains('list-title')) {
             editListTitle(event.target);
-        }        
+        }
 
         if (event.target.classList.contains('list-options-toggle-btn')) {
             toggleDeleteList(event.target);
@@ -504,7 +504,7 @@ function registerEvents() {
             addCard(event.target);
         }
 
-        if (event.target.classList.contains('cancel-edit-card') || event.target.classList.contains('btn-exit') || event.target.classList.contains('modal-backdrop')) {
+        if (event.target.classList.contains('cancel-edit-card') || event.target.classList.contains('close-modal-btn') || event.target.classList.contains('modal-backdrop')) {
             hideCardEditModal();
         }
 
