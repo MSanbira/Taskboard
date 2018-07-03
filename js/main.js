@@ -23,7 +23,7 @@ function createList(list) {
     const listHTML = `<section class="card m-2 p-0 taskboard-list">
 
         <div class="d-flex card-header justify-content-between align-items-center">
-            <div>
+            <div class="list-title-container">
                 <h5 class="list-title show">${list.title}</h5>
                 <input class="form-control form-control input-list-title" type="text" maxlength="14" placeholder="List Name" data-list-id="${list.id}">
             </div>
@@ -179,7 +179,7 @@ function createEditCardModal(cardId, listId) {
         <form class="card-edit-body">
             <section class="form-group row">
                 <label class="col-md-2" for="cardText">Card text:</label>
-                <textarea class="form-control col-md-10" id="cardText" rows="3" maxlength="350">${getCardTextById(cardId)}</textarea>
+                <textarea class="form-control col-md-10" id="cardText" rows="3" maxlength="350">${model.getCardById(cardId).text}</textarea>
             </section>
             <section class="form-group row">
                 <label class="col-md-2" for="moveTo">Move to:</label>
@@ -235,7 +235,7 @@ function createListsForCardEdit(listId) {
 }
 
 function createMembersForCardEdit(cardId) {
-    let checkedMembers = getMembersByCardId(cardId);
+    let checkedMembers = model.getCardById(cardId).members;
     let membersForCardEditHTML = '';
     for (let i = 0; i < model.members.length; i++) {
         let memberTest = 0;
@@ -266,30 +266,6 @@ function createMembersForCardEdit(cardId) {
     return membersForCardEditHTML;
 }
 
-function getMembersByCardId(cardId) {
-    for (let i = 0; i < model.lists.length; i++) {
-        for (let j = 0; j < model.lists[i].cards.length; j++) {
-            if (model.lists[i].cards[j].id === cardId) {
-                return model.lists[i].cards[j].members;
-                i = model.lists.length;
-                break;
-            }
-        }
-    }
-}
-
-function getCardTextById(cardId) {
-    for (let i = 0; i < model.lists.length; i++) {
-        for (let j = 0; j < model.lists[i].cards.length; j++) {
-            if (model.lists[i].cards[j].id === cardId) {
-                return model.lists[i].cards[j].text;
-                i = model.lists.length;
-                break;
-            }
-        }
-    }
-}
-
 // board functions
 
 // lists
@@ -302,38 +278,47 @@ function addList() {
 }
 
 function editListTitle(eventTarget) {
-    let title = eventTarget;
+    let titleElement = eventTarget.parentElement;
     let input = eventTarget.parentElement.querySelector('.input-list-title');
-    title.classList.remove('show');
-    input.classList.add('show');
-    input.value = title.innerText;
+    const listId = input.getAttribute('data-list-id');
+    showTitleEdit(titleElement);
+    input.value = model.getListById(listId).title;
     input.addEventListener('blur', (event) => {
-        title.classList.add('show');
-        input.classList.remove('show');
-        if (input.value != title.innerText) {
-            model.editListTitle(input.value, input.getAttribute('data-list-id'))
-            createBoard(model.lists);
-        }
-        if (input.value == '') {
-            model.editListTitle('(no title)', input.getAttribute('data-list-id'))
-            createBoard(model.lists);
-        }
+        hideTitleEdit(titleElement);
+        changeTitle(input.value, listId);
     });
 }
 
-function hideEditListTitle(eventTarget) {
-    if (!eventTarget.classList.contains('input-list-title')) {
-        let title = document.querySelectorAll('.list-title');
-        let input = document.querySelectorAll('.input-list-title');
-        for (let i = 0; i < model.lists.length; i++) {
-            if (!title[i].classList.contains('show')) {
-                title[i].classList.add('show');
-                input[i].classList.remove('show');
-                if (input[i].value == '') {
-                    model.editListTitle('(no title)', input[i].getAttribute('data-list-id'))
-                    createBoard(model.lists);
-                }
-            }
+function changeTitle(input, listId) {
+    if (input != model.getListById(listId).title) {
+        model.editListTitle(input, listId)
+        createBoard(model.lists);
+    }
+    if (input === '') {
+        model.editListTitle('(no title)', listId)
+        createBoard(model.lists);
+    }
+}
+
+function showTitleEdit(element) {
+    element.classList.add('show-title-edit');
+    element.querySelector('h5').classList.remove('show');
+    element.querySelector('input').classList.add('show');
+}
+
+function hideTitleEdit(element) {
+    element.classList.remove('show-title-edit');
+    element.querySelector('h5').classList.add('show');
+    element.querySelector('input').classList.remove('show');
+}
+
+function hideAllTitleEdit() {
+    let titleElements = document.querySelectorAll('.list-title-container');
+    let input = document.querySelectorAll('.input-list-title');
+    for (let i = 0; i < titleElements.length; i++) {
+        if (titleElements[i].classList.contains('show-title-edit')) {
+            hideTitleEdit(titleElements[i]);
+            changeTitle(input[i].value, input[i].getAttribute('data-list-id'))
         }
     }
 }
@@ -370,7 +355,7 @@ function addCard(eventTarget) {
     document.querySelector('.save-add-card').addEventListener('click', (event) => {
         let listId = event.target.getAttribute('data-list-id');
         let cardText = document.querySelector('#cardText').value;
-        let cardMembers = getMembers(document.querySelectorAll('.card-members-input input'));
+        let cardMembers = getMembersFromModal(document.querySelectorAll('.card-members-input input'));
         if (cardText !== '') {
             model.addCard(cardText, cardMembers, listId);
             hideCardEditModal();
@@ -388,7 +373,7 @@ function editCard(eventTarget) {
         let cardId = event.target.getAttribute('data-card-id');
         let listIdOld = event.target.getAttribute('data-list-id');
         let cardText = document.querySelector('#cardText').value;
-        let cardMembers = getMembers(document.querySelectorAll('.card-members-input input'));
+        let cardMembers = getMembersFromModal(document.querySelectorAll('.card-members-input input'));
         let listIdNew = getListIdNew(document.querySelectorAll('#moveTo option'));
         if (cardText !== '') {
             model.editCard(cardId, cardText, cardMembers, listIdOld, listIdNew);
@@ -408,7 +393,7 @@ function editCard(eventTarget) {
     });
 }
 
-function getMembers(input) {
+function getMembersFromModal(input) {
     let members = [];
     for (const i of input) {
         if (i.checked) {
@@ -454,7 +439,7 @@ function editMember(eventTarget) {
     memberEdit.classList.add('show-flex');
     memberDisplay.classList.remove('show-flex');
     memberEdit.querySelector('.btn-save-member').addEventListener('click', (event) => {
-        if(confirm('Are you sure?')) {
+        if (confirm('Are you sure?')) {
             model.editMember(memberInput.value, event.target.getAttribute('data-member-id'));
             createMembersList(model.members);
             createBoard(model.lists);
@@ -495,15 +480,17 @@ function registerEvents() {
 
         hideDeleteListBtn(event.target);
 
-        hideEditListTitle(event.target);
-
         if (event.target.classList.contains('btn-add-list')) {
             addList();
         }
 
+        if (!event.target.classList.contains('input-list-title')) {
+            hideAllTitleEdit();
+        }
+
         if (event.target.classList.contains('list-title')) {
             editListTitle(event.target);
-        }
+        }        
 
         if (event.target.classList.contains('list-options-toggle-btn')) {
             toggleDeleteList(event.target);
@@ -537,7 +524,7 @@ function registerEvents() {
 
         if (event.target.classList.contains('btn-edit-member')) {
             editMember(event.target);
-        }        
+        }
 
         if (event.target.classList.contains('btn-dlt-member')) {
             deleteMember(event.target);

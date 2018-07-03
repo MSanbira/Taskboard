@@ -85,26 +85,17 @@ const model = {
             text: cardText,
             members: cardMembers
         }
-        for (let i = 0; i < model.lists.length; i++) {
-            if (model.lists[i].id === listId) {
-                model.lists[i].cards.push(newCard);
-                break;
-            }
-        }
+        const list = model.getListById(listId);
+        list.cards.push(newCard);
     },
 
     editListTitle: function (listTitle, listId) {
-        for (let i = 0; i < model.lists.length; i++) {
-            if (model.lists[i].id === listId) {
-                if (listTitle == '') {
-                    model.lists[i].title = '(no title)';
-                    break;
-                }
-                else {
-                    model.lists[i].title = listTitle.trim();
-                    break;
-                }
-            }
+        const list = model.getListById(listId);
+        if (listTitle == '') {
+            list.title = '(no title)';
+        }
+        else {
+            list.title = listTitle.trim();
         }
     },
 
@@ -114,26 +105,16 @@ const model = {
             text: cardText,
             members: cardMembers
         }
-        for (let i = 0; i < model.lists.length; i++) {
-            if (model.lists[i].id === listIdOld) {
-                for (let j = 0; j < model.lists[i].cards.length; j++) {
-                    if (model.lists[i].cards[j].id === cardId) {
-                        if (listIdOld === listIdNew) {
-                            model.lists[i].cards.splice(j, 1, newCard);
-                        }
-                        else {
-                            model.lists[i].cards.splice(j, 1);
-                            for (let k = 0; k < model.lists.length; k++) {
-                                if (model.lists[k].id === listIdNew) {
-                                    model.lists[k].cards.push(newCard);
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
+        const oldList = model.getListById(listIdOld);
+        const newList = model.getListById(listIdNew);
+        const cardIndex = model.getCardIndexById(cardId);
+
+        if (listIdOld === listIdNew) {
+            oldList.cards.splice(cardIndex, 1, newCard);
+        }
+        else {
+            oldList.cards.splice(cardIndex, 1);
+            newList.cards.push(newCard);
         }
     },
 
@@ -147,17 +128,9 @@ const model = {
     },
 
     deleteCard: function (cardId, listId) {
-        for (let i = 0; i < model.lists.length; i++) {
-            if (model.lists[i].id === listId) {
-                for (let j = 0; j < model.lists[i].cards.length; j++) {
-                    if (model.lists[i].cards[j].id === cardId) {
-                        model.lists[i].cards.splice(j, 1);
-                        break;
-                    }
-                }
-                break;
-            }
-        }
+        const list = model.getListById(listId);
+        const cardIndex = model.getCardIndexById(cardId);
+        list.cards.splice(cardIndex, 1);
     },
 
     addMember: function (fullName) {
@@ -169,12 +142,8 @@ const model = {
     },
 
     editMember: function (fullName, memberId) {
-        for (let i = 0; i < model.members.length; i++) {
-            if (model.members[i].id === memberId) {
-                model.members[i].fullName = fullName;
-                break;
-            }
-        }
+        const member = model.getMemberById(memberId);
+        member.fullName = fullName;
     },
 
     deleteMember: function (id) {
@@ -192,6 +161,46 @@ const model = {
                         break;
                     }
                 }
+            }
+        }
+    },
+
+    getListById: function (id) {
+        for (let i = 0; i < model.lists.length; i++) {
+            if (model.lists[i].id === id) {
+                return model.lists[i];
+                break;
+            }
+        }
+    },
+
+    getCardById: function (id) {
+        for (let i = 0; i < model.lists.length; i++) {
+            for (let j = 0; j < model.lists[i].cards.length; j++) {
+                if (model.lists[i].cards[j].id === id) {
+                    return model.lists[i].cards[j];
+                    break;
+                }
+            }
+        }
+    },
+
+    getCardIndexById: function (id) {
+        for (let i = 0; i < model.lists.length; i++) {
+            for (let j = 0; j < model.lists[i].cards.length; j++) {
+                if (model.lists[i].cards[j].id === id) {
+                    return j;
+                    break;
+                }
+            }
+        }
+    },
+
+    getMemberById: function (id) {
+        for (let i = 0; i < model.members.length; i++) {
+            if (model.members[i].id === id) {
+                return model.members[i];
+                break;
             }
         }
     }
