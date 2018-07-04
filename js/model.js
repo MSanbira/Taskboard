@@ -1,4 +1,4 @@
-const model = {
+let model = {
     // lists
     lists: [
         {
@@ -77,6 +77,7 @@ const model = {
             cards: []
         }
         model.lists.push(newList);
+        model.saveModelToLocalStorage();
     },
 
     addCard: function (cardText, cardMembers, listId) {
@@ -87,6 +88,7 @@ const model = {
         }
         const list = model.getListById(listId);
         list.cards.push(newCard);
+        model.saveModelToLocalStorage();
     },
 
     editListTitle: function (listTitle, listId) {
@@ -97,6 +99,7 @@ const model = {
         else {
             list.title = listTitle.trim();
         }
+        model.saveModelToLocalStorage();
     },
 
     editCard: function (cardId, cardText, cardMembers, listIdOld, listIdNew) {
@@ -116,6 +119,7 @@ const model = {
             oldList.cards.splice(cardIndex, 1);
             newList.cards.push(newCard);
         }
+        model.saveModelToLocalStorage();
     },
 
     deleteList: function (id) {
@@ -125,12 +129,14 @@ const model = {
                 break;
             }
         }
+        model.saveModelToLocalStorage();
     },
 
     deleteCard: function (cardId, listId) {
         const list = model.getListById(listId);
         const cardIndex = model.getCardIndexById(cardId);
         list.cards.splice(cardIndex, 1);
+        model.saveModelToLocalStorage();
     },
 
     addMember: function (fullName) {
@@ -139,11 +145,13 @@ const model = {
             fullName: fullName.trim()
         }
         model.members.push(newMember);
+        model.saveModelToLocalStorage();
     },
 
     editMember: function (fullName, memberId) {
         const member = model.getMemberById(memberId);
         member.fullName = fullName;
+        model.saveModelToLocalStorage();
     },
 
     deleteMember: function (id) {
@@ -163,6 +171,7 @@ const model = {
                 }
             }
         }
+        model.saveModelToLocalStorage();
     },
 
     getListById: function (id) {
@@ -203,5 +212,10 @@ const model = {
                 break;
             }
         }
+    },
+
+    saveModelToLocalStorage: function () {
+        const modelJSON = model.JSON.stringify();
+        localStorage.setItem('model', modelJSON);
     }
 };

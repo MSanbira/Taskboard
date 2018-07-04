@@ -273,6 +273,7 @@ function createMembersForCardEdit(cardId) {
 function addList() {
     model.addList();
     createBoard(model.lists);
+    debugger;
     let listsTitle = document.querySelectorAll('.list-title');
     editListTitle(listsTitle[listsTitle.length - 1]);
 }
@@ -485,12 +486,12 @@ function registerEvents() {
 
         hideDeleteListBtn(event.target);
 
-        if (event.target.classList.contains('btn-add-list')) {
-            addList();
-        }
-
         if (!event.target.classList.contains('input-list-title')) {
             hideAllTitleEdit();
+        }
+
+        if (event.target.classList.contains('btn-add-list')) {
+            addList();
         }
 
         if (event.target.classList.contains('list-title')) {
