@@ -1,4 +1,4 @@
-let model = {
+const model = {
     // lists
     lists: [
         {
@@ -215,7 +215,9 @@ let model = {
     },
 
     saveModelToLocalStorage: function () {
-        const modelJSON = model.JSON.stringify();
-        localStorage.setItem('model', modelJSON);
+        const listsJSON = JSON.stringify(model.lists);
+        const membersJSON = JSON.stringify(model.members);
+        localStorage.setItem('modelLists', listsJSON);
+        localStorage.setItem('modelMembers', membersJSON);
     }
 };

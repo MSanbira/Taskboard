@@ -273,7 +273,6 @@ function createMembersForCardEdit(cardId) {
 function addList() {
     model.addList();
     createBoard(model.lists);
-    debugger;
     let listsTitle = document.querySelectorAll('.list-title');
     editListTitle(listsTitle[listsTitle.length - 1]);
 }
@@ -469,10 +468,20 @@ function deleteMember(eventTarget) {
 // init + events
 
 function init() {
+    getModelFromLocalStorage();
     createMembersList(model.members);
     createBoard(model.lists);
     registerEvents();
     showSection();
+}
+
+function getModelFromLocalStorage() {
+    if (window.localStorage.length != 0) {
+        const listsJSON = localStorage.getItem('modelLists');
+        const membersJSON = localStorage.getItem('modelMembers');
+        model.lists = JSON.parse(listsJSON);
+        model.members = JSON.parse(membersJSON);
+    }
 }
 
 function registerEvents() {
