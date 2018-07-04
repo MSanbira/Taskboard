@@ -3,67 +3,13 @@ const model = {
     lists: [
         {
             id: '_8er9bgfka',
-            title: 'Todo',
-            cards: [
-                {
-                    id: '_hpe3lbbja',
-                    text: 'wash the dishes',
-                    members: [
-                        '_sioy9cpwk', '_6jo650ic4'
-                    ]
-                },
-                {
-                    id: '_38bkwdonk',
-                    text: 'Do De LANDRY',
-                    members: [
-                        '_sioy9cpwk'
-                    ]
-                },
-                {
-                    id: '_kxo8gqz4t',
-                    text: 'here is anouther card to put on the list to finally see if the css is worcking ok, and there are no members. just a few more words to see what happends',
-                    members: []
-                }
-            ]
-        },
-        {
-            id: '_k3de9v44n',
-            title: 'done',
-            cards: [
-                {
-                    id: '_o6jvpz751',
-                    text: 'btn game',
-                    members: [
-                        '_sioy9cpwk'
-                    ]
-                },
-                {
-                    id: '_s5u1oqyif',
-                    text: 'macking a nice breackfest for my wife',
-                    members: [
-                        '_sioy9cpwk'
-                    ]
-                }
-            ]
-        },
-        {
-            id: '_37crd17o8',
-            title: 'in prog',
+            title: 'My first list',
             cards: []
         }
     ],
 
     //members  
-    members: [
-        {
-            id: '_sioy9cpwk',
-            fullName: 'Matan Nahoom Sanbira'
-        },
-        {
-            id: '_6jo650ic4',
-            fullName: 'Dima V'
-        }
-    ],
+    members: [],
 
     //functions
     idGenerator: function () {
