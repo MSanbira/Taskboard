@@ -282,7 +282,12 @@ function editListTitle(eventTarget) {
     let input = eventTarget.parentElement.querySelector('.input-list-title');
     const listId = input.getAttribute('data-list-id');
     showTitleEdit(titleElement);
-    input.value = model.getListById(listId).title;
+    if (model.getListById(listId).title == '(no title)') {
+        input.value = '';
+    }
+    else {
+        input.value = model.getListById(listId).title;
+    }
     input.addEventListener('blur', (event) => {
         hideTitleEdit(titleElement);
         changeTitle(input.value, listId);

@@ -19,7 +19,7 @@ const model = {
     addList: function () {
         let newList = {
             id: model.idGenerator(),
-            title: '',
+            title: '(no title)',
             cards: []
         }
         model.lists.push(newList);
