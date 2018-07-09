@@ -1,62 +1,71 @@
-const model = {
-    // lists
-    lists: [
+
+let model = (function() {
+
+    const lists = [
         {
             id: '_8er9bgfka',
             title: 'My first list',
             cards: []
         }
-    ],
+    ];
 
-    //members  
-    members: [],
+    const members = [];
 
-    //functions
-    idGenerator: function () {
+    const idGenerator = function () {
         return '_' + Math.random().toString(36).substr(2, 9);
-    },
+    }
 
-    addList: function () {
+    const saveModelListsToLocalStorage = function () {
+        const listsJSON = JSON.stringify(model.lists);
+        localStorage.setItem('modelLists', listsJSON);
+    }
+
+    const saveModelMembersToLocalStorage = function () {
+        const membersJSON = JSON.stringify(model.members);
+        localStorage.setItem('modelMembers', membersJSON);
+    }
+
+    const addList = function () {
         let newList = {
-            id: model.idGenerator(),
+            id: idGenerator(),
             title: '(no title)',
             cards: []
         }
         model.lists.push(newList);
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    addCard: function (cardText, cardMembers, listId) {
+    const addCard = function (cardText, cardMembers, listId) {
         let newCard = {
-            id: model.idGenerator(),
+            id: idGenerator(),
             text: cardText,
             members: cardMembers
         }
-        const list = model.getListById(listId);
+        const list = getListById(listId);
         list.cards.push(newCard);
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    editListTitle: function (listTitle, listId) {
-        const list = model.getListById(listId);
+    const editListTitle = function (listTitle, listId) {
+        const list = getListById(listId);
         if (listTitle == '') {
             list.title = '(no title)';
         }
         else {
             list.title = listTitle.trim();
         }
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    editCard: function (cardId, cardText, cardMembers, listIdOld, listIdNew) {
+    const editCard = function (cardId, cardText, cardMembers, listIdOld, listIdNew) {
         let newCard = {
             id: cardId,
             text: cardText,
             members: cardMembers
         }
-        const oldList = model.getListById(listIdOld);
-        const newList = model.getListById(listIdNew);
-        const cardIndex = model.getCardIndexById(cardId);
+        const oldList = getListById(listIdOld);
+        const newList = getListById(listIdNew);
+        const cardIndex = getCardIndexById(cardId);
 
         if (listIdOld === listIdNew) {
             oldList.cards.splice(cardIndex, 1, newCard);
@@ -65,42 +74,42 @@ const model = {
             oldList.cards.splice(cardIndex, 1);
             newList.cards.push(newCard);
         }
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    deleteList: function (id) {
+    const deleteList = function (id) {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === id) {
                 model.lists.splice(i, 1);
                 break;
             }
         }
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    deleteCard: function (cardId, listId) {
-        const list = model.getListById(listId);
-        const cardIndex = model.getCardIndexById(cardId);
+    const deleteCard = function (cardId, listId) {
+        const list = getListById(listId);
+        const cardIndex = getCardIndexById(cardId);
         list.cards.splice(cardIndex, 1);
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+    }
 
-    addMember: function (fullName) {
+    const addMember = function (fullName) {
         let newMember = {
-            id: model.idGenerator(),
+            id: idGenerator(),
             fullName: fullName.trim()
         }
         model.members.push(newMember);
-        model.saveModelToLocalStorage();
-    },
+        saveModelMembersToLocalStorage();
+    }
 
-    editMember: function (fullName, memberId) {
-        const member = model.getMemberById(memberId);
+    const editMember = function (fullName, memberId) {
+        const member = getMemberById(memberId);
         member.fullName = fullName;
-        model.saveModelToLocalStorage();
-    },
+        saveModelMembersToLocalStorage();
+    }
 
-    deleteMember: function (id) {
+    const deleteMember = function (id) {
         for (let i = 0; i < model.members.length; i++) {
             if (model.members[i].id === id) {
                 model.members.splice(i, 1);
@@ -117,19 +126,20 @@ const model = {
                 }
             }
         }
-        model.saveModelToLocalStorage();
-    },
+        saveModelListsToLocalStorage();
+        saveModelMembersToLocalStorage();
+    }
 
-    getListById: function (id) {
+    const getListById = function (id) {
         for (let i = 0; i < model.lists.length; i++) {
             if (model.lists[i].id === id) {
                 return model.lists[i];
                 break;
             }
         }
-    },
+    }
 
-    getCardById: function (id) {
+    const getCardById = function (id) {
         for (let i = 0; i < model.lists.length; i++) {
             for (let j = 0; j < model.lists[i].cards.length; j++) {
                 if (model.lists[i].cards[j].id === id) {
@@ -138,9 +148,9 @@ const model = {
                 }
             }
         }
-    },
+    }
 
-    getCardIndexById: function (id) {
+    const getCardIndexById = function (id) {
         for (let i = 0; i < model.lists.length; i++) {
             for (let j = 0; j < model.lists[i].cards.length; j++) {
                 if (model.lists[i].cards[j].id === id) {
@@ -149,21 +159,30 @@ const model = {
                 }
             }
         }
-    },
+    }
 
-    getMemberById: function (id) {
+    const getMemberById = function (id) {
         for (let i = 0; i < model.members.length; i++) {
             if (model.members[i].id === id) {
                 return model.members[i];
                 break;
             }
         }
-    },
-
-    saveModelToLocalStorage: function () {
-        const listsJSON = JSON.stringify(model.lists);
-        const membersJSON = JSON.stringify(model.members);
-        localStorage.setItem('modelLists', listsJSON);
-        localStorage.setItem('modelMembers', membersJSON);
     }
-};
+
+    return {
+        lists: lists,
+        members: members,
+        addList: addList,
+        addCard: addCard,
+        editListTitle: editListTitle,
+        editCard: editCard,
+        deleteList: deleteList,
+        deleteCard: deleteCard,
+        addMember: addMember,
+        editMember: editMember,
+        deleteMember: deleteMember,
+        getListById: getListById,
+        getCardById: getCardById
+    };
+})();
