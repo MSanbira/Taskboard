@@ -57,17 +57,17 @@ let model = (function() {
         saveModelListsToLocalStorage();
     }
 
-    const editCard = function (cardId, cardText, cardMembers, listIdOld, listIdNew) {
+    const editCard = function (cardId, cardText, cardMembers, moveFromListId, moveToListId) {
         let newCard = {
             id: cardId,
             text: cardText,
             members: cardMembers
         }
-        const oldList = getListById(listIdOld);
-        const newList = getListById(listIdNew);
+        const oldList = getListById(moveFromListId);
+        const newList = getListById(moveToListId);
         const cardIndex = getCardIndexById(cardId);
 
-        if (listIdOld === listIdNew) {
+        if (moveFromListId === moveToListId) {
             oldList.cards.splice(cardIndex, 1, newCard);
         }
         else {

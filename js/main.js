@@ -1,12 +1,16 @@
 
 // UI board
 
+let taskboardBoard = document.querySelector(".taskboard-board");
+
+let taskboardMembers = document.querySelector(".members-list");
+
 function createBoard(listsArr) {
     let listsHTML = '';
     for (const list of listsArr) {
         listsHTML += createList(list);
     }
-    document.querySelector(".taskboard-board").innerHTML = listsHTML +
+    taskboardBoard.innerHTML = listsHTML +
         '<button class="btn btn-info m-2 col-lg-2 text-left btn-add-list">Add a list...</button>';
 }
 
@@ -109,7 +113,7 @@ function createMembersList(members) {
     for (const member of members) {
         membersHTML += createMember(member);
     }
-    document.querySelector(".members-list").innerHTML = membersHTML +
+    taskboardMembers.innerHTML = membersHTML +
         `<li class="list-group-item d-flex align-content-center">
         <input class="form-control form-control-lg mr-2 input-member" maxlength="25" type="text" placeholder="Add new member">
         <button class="btn btn-primary btn-add-member">Add</button>
@@ -376,12 +380,12 @@ function editCard(eventTarget) {
     createEditCardModal(eventTarget.getAttribute('data-card-id'), eventTarget.getAttribute('data-list-id'));
     document.querySelector('.save-edit-card').addEventListener('click', (event) => {
         let cardId = event.target.getAttribute('data-card-id');
-        let listIdOld = event.target.getAttribute('data-list-id');
+        let moveFromListId = event.target.getAttribute('data-list-id');
         let cardText = document.querySelector('#cardText').value;
         let cardMembers = getMembersFromModal(document.querySelectorAll('.card-members-input input'));
-        let listIdNew = getListIdNew(document.querySelectorAll('#moveTo option'));
+        let moveToListId = getListIdNew(document.querySelectorAll('#moveTo option'));
         if (cardText !== '') {
-            model.editCard(cardId, cardText, cardMembers, listIdOld, listIdNew);
+            model.editCard(cardId, cardText, cardMembers, moveFromListId, moveToListId);
             hideCardEditModal();
             createBoard(model.lists);
         }
