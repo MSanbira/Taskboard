@@ -563,7 +563,7 @@ function registerEvents() {
 function changeLocationHash(eventTarget) {
     const navTo = eventTarget.innerText;
     window.location.hash = navTo;
-    window.location.reload(true);
+    window.onhashchange = showSection();
 }
 
 function toggleBtnNavColor(openSection) {
