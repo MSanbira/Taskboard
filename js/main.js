@@ -481,11 +481,13 @@ function init() {
 }
 
 function getModelFromLocalStorage() {
-    if (window.localStorage.length != 0) {
-        const listsJSON = localStorage.getItem('modelLists');
-        const membersJSON = localStorage.getItem('modelMembers');
-        model.lists = JSON.parse(listsJSON);
-        model.members = JSON.parse(membersJSON);
+    if (window.localStorage.getItem('modelLists') != null) {
+        const listsString = localStorage.getItem('modelLists');
+        model.lists = JSON.parse(listsString);
+    }
+    if (window.localStorage.getItem('modelMembers') != null) {
+        const membersString = localStorage.getItem('modelMembers');
+        model.members = JSON.parse(membersString);
     }
 }
 
